@@ -1,5 +1,4 @@
 import axios from 'axios';
-import router from 'next/router';
 import dayjs from 'dayjs';
 import Cookies from 'js-cookie';
 import deftag from './util.deftag';
@@ -165,18 +164,6 @@ const util = {
         return acc;
 
     }, {}),
-
-    /**
-     * @author Betty
-     * @param {string} url
-     * @param {boolean} isRefresh 是否重刷頁面
-     */
-    redirectTo: (url = '/', isRefresh = true) => {
-
-        router.push(url, router.asPath, { locale: router.locale });
-        if (isRefresh) router.reload();
-
-    },
 
 };
 

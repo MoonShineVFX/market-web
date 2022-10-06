@@ -1,19 +1,32 @@
-import {
-    createContext,
-    useReducer,
-    useEffect,
-    useState,
-} from 'react';
-import { globalReducer, lightboxReducer } from './global.reducer';
+import React, { createContext, useReducer } from 'react';
 import Service from '../utils/util.service';
+
+import {
+    globalReducer,
+    formStorageReducer,
+    lightboxReducer,
+} from './global.reducer';
 
 // Global
 const globalInitState = {
-    currCate: 'all',
-    files: null,
-    searchResData: null,
-    accounts: null,
-    userInfo: null,
+    page: '',
+    user: {},
+    tags: [],
+    slideshowActive: 0,
+    logged: false,
+    targetBox: '',
+    targetPopup: null,
+    sideNav: false,
+    snackbar: false,
+    cart: {},
+    dynamicAction: '',
+    isVerified: false,
+    deftags: {},
+};
+
+// Form values
+const formStorageInitState = {
+    formStorageData: {},
 };
 
 // Lightbox
@@ -29,59 +42,80 @@ const GlobalContext = createContext(null);
 const GlobalProvider = ({ children }) => {
 
     const [globalState, globalDispatch] = useReducer(globalReducer, globalInitState);
+    const [formStorageState, formStorageDispatch] = useReducer(formStorageReducer, formStorageInitState);
     const [lightboxState, lightboxDispatch] = useReducer(lightboxReducer, lightboxInitState);
     const {
-        currCate,
-        files,
-        searchResData,
-        accounts,
-        userInfo,
+        page,
+        user,
+        tags,
+        slideshowActive,
+        logged,
+        targetBox,
+        targetPopup,
+        sideNav,
+        snackbar,
+        cart,
+        dynamicAction,
+        isVerified,
+        deftags,
     } = globalState;
+
+    const { formStorageData } = formStorageState;
     const { visible, currEvent } = lightboxState;
     const { Provider } = GlobalContext;
 
-    // State
-    const [loading, setLoading] = useState(true);
+    // 取得全域資料
+    const getGlobalData = () => {
 
-    useEffect(() => {
-
-        Service.userInfo()
+        Service.common()
             .then((resData) => {
 
-                globalDispatch({ type: 'user_info', payload: resData });
-
-            })
-            .finally(() => {
-
-                setLoading(false);
+                const { tags, ...rest } = resData;
+                globalDispatch({
+                    type: 'global_data',
+                    payload: {
+                        tags,
+                        other: rest,
+                    },
+                });
 
             });
 
-    }, []);
+    };
 
     return (
 
-        !loading && (
+        <Provider value={{
+            // 全域資料
+            page,
+            user,
+            tags,
+            slideshowActive,
+            logged,
+            targetBox,
+            targetPopup,
+            sideNav,
+            snackbar,
+            cart,
+            dynamicAction,
+            isVerified,
+            deftags,
+            getGlobalData,
 
-            <Provider value={{
-                // 全域資料
-                currCate,
-                files,
-                searchResData,
-                accounts,
-                userInfo,
+            // Form 表單暫存
+            formStorageData,
 
-                // lightbox
-                visible,
-                currEvent,
+            // Lightbox
+            visible,
+            currEvent,
 
-                // dispatch
-                globalDispatch,
-                lightboxDispatch,
-            }}>
-                {children}
-            </Provider>
-        )
+            // Dispatch
+            globalDispatch,
+            formStorageDispatch,
+            lightboxDispatch,
+        }}>
+            {children}
+        </Provider>
 
     );
 

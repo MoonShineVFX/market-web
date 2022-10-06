@@ -1,58 +1,45 @@
-import { useContext } from 'react';
+import { Fragment, useContext } from 'react';
 import { Navigate, Outlet } from 'react-router-dom';
-import { Layout } from 'antd';
-import styled from 'styled-components';
-import moment from 'moment';
-import Navbar from './Navbar';
-import { GlobalContext } from '../context/global.state';
+import { Box } from '@mui/material';
 
-const { Content, Footer } = Layout;
-
-//
-const ContentLayout = styled(Content)({
-    minHeight: 'calc(100vh - 54px - 30px)', // footer: 54px, main margin bottom: 30px
-    marginBottom: '30px',
-    padding: '30px 30px 20px',
-});
-
-//
-const FooterLayout = styled(Footer)(({ theme }) => ({
-    textAlign: 'center',
-    backgroundColor: theme.palette.container,
-    paddingTop: '16px',
-    paddingBottom: '16px',
-}));
+// import { GlobalContext } from '../context/global.state';
+import Header from './Header';
+import Footer from './Footer';
 
 //
 const Frame = () => {
 
     // Context
-    const { userInfo } = useContext(GlobalContext);
+    // const { userInfo } = useContext(GlobalContext);
 
-    // 未登入導去燈入頁
-    if (!userInfo) {
+    // // 未登入導去燈入頁
+    // if (!userInfo) {
 
-        return <Navigate to={'/login'} replace />;
+    //     return <Navigate to={'/signin'} replace />;
 
-    }
+    // }
 
     return (
 
-        <Layout
-            style={{
-                marginLeft: 200,
-            }}
-        >
-            <Navbar />
-
-            <Layout>
-                <ContentLayout>
+        <Fragment>
+            <Header />
+            <Box
+                component="main"
+                sx={{ display: 'flex' }}
+            >
+                <Box
+                    component="div"
+                    className="Model-container"
+                    sx={{
+                        paddingTop: '20px',
+                        paddingBottom: '20px',
+                    }}
+                >
                     <Outlet />
-                </ContentLayout>
-
-                <FooterLayout>Copyright © {moment().format('YYYY')} Moonshine. All rights reserved.</FooterLayout>
-            </Layout>
-        </Layout>
+                </Box>
+            </Box>
+            <Footer />
+        </Fragment>
     );
 
 };

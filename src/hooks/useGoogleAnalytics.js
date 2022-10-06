@@ -1,16 +1,16 @@
 import { useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useLocation } from 'react-router-dom';
 import ReactGA from 'react-ga';
 
 export default function useGoogleAnalytics () {
 
     // Router
-    const router = useRouter();
+    const location = useLocation();
 
     // init
     const init = () => {
 
-        ReactGA.initialize(process.env.NEXT_PUBLIC_GAID);
+        ReactGA.initialize(process.env.REACT_APP_GAID);
 
     };
 
@@ -36,9 +36,9 @@ export default function useGoogleAnalytics () {
     useEffect(() => {
 
         init();
-        sendPageview(router.pathname);
+        sendPageview(location.pathname);
 
-    }, [router]);
+    }, [location]);
 
     return eventTracker;
 

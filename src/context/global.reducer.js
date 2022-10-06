@@ -2,59 +2,116 @@
 const globalReducer = (state, { type, payload }) => {
 
     switch (type) {
-        // 使用者資料
-        case 'user_info':
+        case 'page':
             return {
                 ...state,
-                userInfo: payload,
+                page: payload,
             };
 
-        // 檔案列表
-        case 'file_list':
+        case 'slideshow':
             return {
                 ...state,
-                files: payload,
+                slideshowActive: payload,
             };
 
-        case 'file_category':
+        case 'sidenav':
             return {
                 ...state,
-                currCate: payload,
+                sideNav: payload,
             };
 
-        case 'file_search':
+        case 'global_data':
             return {
                 ...state,
-                searchResData: payload,
+                tags: payload.tags,
+                user: payload.other,
+                logged: !!payload.other.userId,
             };
 
-        case 'file_delete':
+        case 'lang_list':
             return {
                 ...state,
-                files: state.files.filter((obj) => !payload.some((key) => obj.id === key)),
+                deftags: payload,
             };
 
-        // 後台帳號
-        case 'account_list':
+        case 'cart_list':
             return {
                 ...state,
-                accounts: payload,
+                cart: payload,
             };
 
-        case 'account_create':
+        case 'add_cart':
             return {
                 ...state,
-                accounts: [{ ...payload }, ...state.accounts],
+                cart: {
+                    ...state.cart,
+                    count: Object.entries(payload).length,
+                    items: payload,
+                },
             };
 
-        case 'account_delete':
+        case 'remove_cart':
+            delete state.cart.items[payload];
             return {
                 ...state,
-                accounts: state.accounts.filter(({ uid }) => uid !== payload),
+                cart: {
+                    ...state.cart,
+                    count: Object.entries(state.cart.items).length,
+                },
+            };
+
+        case 'target_box':
+            return {
+                ...state,
+                targetBox: payload,
+            };
+
+        case 'target_popup':
+            return {
+                ...state,
+                targetPopup: payload,
+            };
+
+        case 'snackbar':
+            return {
+                ...state,
+                snackbar: payload,
+            };
+
+        case 'recaptcha_action':
+            return {
+                ...state,
+                dynamicAction: payload,
+            };
+
+        case 'recaptcha_is_verified':
+            return {
+                ...state,
+                isVerified: payload,
             };
 
         default:
             return { ...state };
+    }
+
+};
+
+// Form Fields
+const formStorageReducer = (state, { type, payload }) => {
+
+    switch (type) {
+        case 'COLLECT':
+            return {
+                formStorageData: payload,
+            };
+
+        case 'CLEAR':
+            return {
+                formStorageData: {},
+            };
+
+        default:
+            return state;
     }
 
 };
@@ -64,7 +121,7 @@ const lightboxReducer = (state, { type, currEvent }) => {
 
     switch (type) {
         case 'SHOW':
-            return { visible: true, currEvent };
+            return { visible: true, currEvent: currEvent || '' };
 
         case 'HIDE':
             return { visible: false, currEvent: '' };
@@ -75,4 +132,8 @@ const lightboxReducer = (state, { type, currEvent }) => {
 
 };
 
-export { globalReducer, lightboxReducer };
+export {
+    globalReducer,
+    formStorageReducer,
+    lightboxReducer,
+};
