@@ -38,7 +38,7 @@ const util = {
             };
 
             axios({
-                baseURL: (process.env.NODE_ENV === 'development') ? `https://${process.env.HOST}/api` : '/api',
+                baseURL: (process.env.NODE_ENV === 'development') ? `https://${process.env.REACT_APP_HOST}/api` : '/api',
                 url: service,
                 method: 'post',
                 ...condi && { data: reqData },

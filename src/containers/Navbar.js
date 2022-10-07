@@ -1,6 +1,6 @@
 import { useContext } from 'react';
+import { NavLink } from 'react-router-dom';
 import { NavMenuLayout } from './globalLayout';
-import Links from '../components/Links';
 import { GlobalContext } from '../context/global.state';
 
 const Navbar = ({ ...rest }) => {
@@ -30,13 +30,9 @@ const Navbar = ({ ...rest }) => {
             {
                 navMenus.map(({ key, text }) => (
 
-                    <Links
-                        key={key}
-                        url={`/${key}`}
-                        title={text}
-                    >
+                    <NavLink key={key} to={key}>
                         {text}
-                    </Links>
+                    </NavLink>
 
                 ))
             }

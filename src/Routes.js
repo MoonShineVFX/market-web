@@ -8,16 +8,14 @@ import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import theme from './utils/theme';
 import { GlobalProvider } from './context/global.state';
 
-// 未登入
-import Signin from './pages/Signin';
+import PublicLayout from './containers/PublicLayout';
+import ProtectedLayout from './containers/ProtectedLayout';
 
-// 已登入
-import Frame from './containers/Frame';
+import Signin from './pages/Signin';
 import Home from './pages/home/Home';
-// import AccountList from './pages/AccountList';
 
 const styles = {
-    body: {
+    'body': {
         lineHeight: '1.6',
         fontSize: '1em',
         fontFamily: 'Arial, 文泉驛正黑, WenQuanYi Zen Hei, 儷黑 Pro, LiHei Pro, 微軟正黑體, Microsoft JhengHei',
@@ -28,7 +26,7 @@ const styles = {
             boxSizing: 'border-box',
         },
     },
-    a: {
+    'a': {
         color: theme.palette.secondary.main,
         display: 'inline-block',
         textDecoration: 'none',
@@ -129,11 +127,15 @@ const PageRoute = () => {
             <GlobalProvider>
                 <GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCHA_KEY}>
                     <Routes>
-                        <Route path="signin" element={<Signin />} />
+                        <Route element={<PublicLayout />}>
+                            <Route path="signin" element={<Signin />} />
+                        </Route>
 
-                        <Route element={<Frame />}>
+                        <Route element={<ProtectedLayout />}>
                             <Route index element={<Home />} />
-                            {/* <Route path="admin_account" element={<AccountList />} /> */}
+                            <Route path="product/list" element={<Home />} />
+                            <Route path="about" element={<Home />} />
+                            <Route path="tutorial" element={<Home />} />
                         </Route>
                     </Routes>
                 </GoogleReCaptchaProvider>

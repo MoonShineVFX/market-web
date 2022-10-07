@@ -3,6 +3,7 @@ import util from './util';
 const Service = {
     // common
     common: (reqData) => util.serviceProxy('/common', reqData),
+    langs: (reqData) => util.serviceProxy('/lang_configs', reqData),
 
     // 未登入 (註冊、登入、忘記密碼、重設密碼)
     signin: ({ reqData, headers }) => util.serviceProxy('/login', reqData, {

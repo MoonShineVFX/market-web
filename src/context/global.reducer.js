@@ -2,6 +2,12 @@
 const globalReducer = (state, { type, payload }) => {
 
     switch (type) {
+        case 'lang_config':
+            return {
+                ...state,
+                deftags: payload,
+            };
+
         case 'page':
             return {
                 ...state,

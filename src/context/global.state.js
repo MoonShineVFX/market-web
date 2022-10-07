@@ -1,4 +1,9 @@
-import React, { createContext, useReducer } from 'react';
+import React, {
+    createContext,
+    useReducer,
+    useEffect,
+    useState,
+} from 'react';
 import Service from '../utils/util.service';
 
 import {
@@ -9,8 +14,9 @@ import {
 
 // Global
 const globalInitState = {
-    page: '',
-    user: {},
+    locale: 'zh',
+    deftags: null,
+    user: null,
     tags: [],
     slideshowActive: 0,
     logged: false,
@@ -21,7 +27,6 @@ const globalInitState = {
     cart: {},
     dynamicAction: '',
     isVerified: false,
-    deftags: {},
 };
 
 // Form values
@@ -45,7 +50,8 @@ const GlobalProvider = ({ children }) => {
     const [formStorageState, formStorageDispatch] = useReducer(formStorageReducer, formStorageInitState);
     const [lightboxState, lightboxDispatch] = useReducer(lightboxReducer, lightboxInitState);
     const {
-        page,
+        locale,
+        deftags,
         user,
         tags,
         slideshowActive,
@@ -57,65 +63,79 @@ const GlobalProvider = ({ children }) => {
         cart,
         dynamicAction,
         isVerified,
-        deftags,
     } = globalState;
 
     const { formStorageData } = formStorageState;
     const { visible, currEvent } = lightboxState;
     const { Provider } = GlobalContext;
 
-    // 取得全域資料
-    const getGlobalData = () => {
+    // State
+    const [loading, setLoading] = useState(true);
 
-        Service.common()
-            .then((resData) => {
+    useEffect(() => {
 
-                const { tags, ...rest } = resData;
-                globalDispatch({
-                    type: 'global_data',
-                    payload: {
-                        tags,
-                        other: rest,
-                    },
-                });
+        const fetchData = async() => {
 
+            // 取得語系包
+            const langs = await Service.langs();
+
+            // 取得使用者資訊
+            const data = await Service.common();
+            const { tags, ...rest } = data;
+
+            globalDispatch({ type: 'lang_config', payload: langs[locale] });
+            globalDispatch({
+                type: 'global_data',
+                payload: {
+                    tags,
+                    other: rest,
+                },
             });
 
-    };
+            if (data) setLoading(false);
+
+        };
+
+        fetchData();
+
+    }, [locale]);
 
     return (
 
-        <Provider value={{
-            // 全域資料
-            page,
-            user,
-            tags,
-            slideshowActive,
-            logged,
-            targetBox,
-            targetPopup,
-            sideNav,
-            snackbar,
-            cart,
-            dynamicAction,
-            isVerified,
-            deftags,
-            getGlobalData,
+        !loading && (
 
-            // Form 表單暫存
-            formStorageData,
+            <Provider value={{
+                // 全域資料
+                locale,
+                deftags,
+                user,
+                tags,
+                slideshowActive,
+                logged,
+                targetBox,
+                targetPopup,
+                sideNav,
+                snackbar,
+                cart,
+                dynamicAction,
+                isVerified,
 
-            // Lightbox
-            visible,
-            currEvent,
+                // Form 表單暫存
+                formStorageData,
 
-            // Dispatch
-            globalDispatch,
-            formStorageDispatch,
-            lightboxDispatch,
-        }}>
-            {children}
-        </Provider>
+                // Lightbox
+                visible,
+                currEvent,
+
+                // Dispatch
+                globalDispatch,
+                formStorageDispatch,
+                lightboxDispatch,
+            }}>
+                {children}
+            </Provider>
+
+        )
 
     );
 

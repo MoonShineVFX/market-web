@@ -7,7 +7,7 @@ import Header from './Header';
 import Footer from './Footer';
 
 //
-const Frame = () => {
+const Frame = ({ children }) => {
 
     // Context
     // const { userInfo } = useContext(GlobalContext);
@@ -35,7 +35,8 @@ const Frame = () => {
                         paddingBottom: '20px',
                     }}
                 >
-                    <Outlet />
+                    {children}
+                    {/* <Outlet /> */}
                 </Box>
             </Box>
             <Footer />
