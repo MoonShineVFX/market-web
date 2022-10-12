@@ -8,11 +8,13 @@ import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import theme from './utils/theme';
 import { GlobalProvider } from './context/global.state';
 
+import GuestLayout from './containers/GuestLayout';
 import PublicLayout from './containers/PublicLayout';
 import ProtectedLayout from './containers/ProtectedLayout';
 
 import Signin from './pages/Signin';
 import Home from './pages/home/Home';
+import About from './pages/About';
 
 const styles = {
     'body': {
@@ -127,15 +129,21 @@ const PageRoute = () => {
             <GlobalProvider>
                 <GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCHA_KEY}>
                     <Routes>
-                        <Route element={<PublicLayout />}>
+                        <Route element={<GuestLayout />}>
                             <Route path="signin" element={<Signin />} />
                         </Route>
 
-                        <Route element={<ProtectedLayout />}>
+                        <Route element={<PublicLayout />}>
                             <Route index element={<Home />} />
                             <Route path="product/list" element={<Home />} />
-                            <Route path="about" element={<Home />} />
+                            <Route path="about" element={<About />} />
                             <Route path="tutorial" element={<Home />} />
+                        </Route>
+
+                        <Route element={<ProtectedLayout />}>
+                            <Route path="/member" element={<Signin />}>
+                                <Route path="account" element={<Signin />} />
+                            </Route>
                         </Route>
                     </Routes>
                 </GoogleReCaptchaProvider>
