@@ -1,9 +1,8 @@
 import { Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from '@mui/material/styles';
-import { GlobalStyles, Box } from '@mui/material';
-import { config } from '@fortawesome/fontawesome-svg-core';
-import '@fortawesome/fontawesome-svg-core/styles.css';
+import { GlobalStyles } from '@mui/material';
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
+import '@fortawesome/fontawesome-svg-core/styles.css';
 
 import theme from './utils/theme';
 import { GlobalProvider } from './context/global.state';
@@ -135,14 +134,14 @@ const PageRoute = () => {
 
                         <Route element={<PublicLayout />}>
                             <Route index element={<Home />} />
-                            <Route path="product/list" element={<Home />} />
+                            <Route path="product/list" element={<>product list</>} />
                             <Route path="about" element={<About />} />
-                            <Route path="tutorial" element={<Home />} />
+                            <Route path="tutorial" element={<>tutorial</>} />
                         </Route>
 
                         <Route element={<ProtectedLayout />}>
-                            <Route path="/member" element={<Signin />}>
-                                <Route path="account" element={<Signin />} />
+                            <Route path="/member" element={<>/member</>}>
+                                <Route path="account" element={<>account</>} />
                             </Route>
                         </Route>
                     </Routes>

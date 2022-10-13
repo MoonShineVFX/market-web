@@ -1,48 +1,31 @@
-import { Fragment, useContext } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
+import { Fragment } from 'react';
 import { Box } from '@mui/material';
-
-// import { GlobalContext } from '../context/global.state';
+import SEO from './SEO';
 import Header from './Header';
 import Footer from './Footer';
 
-//
-const Frame = ({ children }) => {
+const Frame = ({ children }) => (
 
-    // Context
-    // const { userInfo } = useContext(GlobalContext);
-
-    // // 未登入導去燈入頁
-    // if (!userInfo) {
-
-    //     return <Navigate to={'/signin'} replace />;
-
-    // }
-
-    return (
-
-        <Fragment>
-            <Header />
+    <Fragment>
+        <SEO />
+        <Header />
+        <Box
+            component="main"
+            sx={{ display: 'flex' }}
+        >
             <Box
-                component="main"
-                sx={{ display: 'flex' }}
+                component="div"
+                className="Model-container"
+                sx={{
+                    paddingTop: '20px',
+                    paddingBottom: '20px',
+                }}
             >
-                <Box
-                    component="div"
-                    className="Model-container"
-                    sx={{
-                        paddingTop: '20px',
-                        paddingBottom: '20px',
-                    }}
-                >
-                    {children}
-                    {/* <Outlet /> */}
-                </Box>
+                {children}
             </Box>
-            <Footer />
-        </Fragment>
-    );
-
-};
+        </Box>
+        <Footer />
+    </Fragment>
+);
 
 export default Frame;

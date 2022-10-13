@@ -6,10 +6,11 @@ import {
 } from 'react';
 import { Grid } from '@mui/material';
 import { styled } from '@mui/system';
-import ContentHeader from '../src/containers/ContentHeader';
-import { GlobalContext } from '../src/context/global.state';
-import util from '../src/utils/util';
-import Service from '../src/utils/util.service';
+
+import SEO from '../containers/SEO';
+import { GlobalContext } from '../context/global.state';
+import util from '../utils/util';
+import Service from '../utils/util.service';
 
 const BannerLayout = styled('section')(({ theme }) => ({
     fontSize: '1.25em',
@@ -102,6 +103,7 @@ const About = () => {
 
     // State
     const [pageData, setPageData] = useState(null);
+    const [support, setSupport] = useState(null);
 
     // Context
     const { globalDispatch } = useContext(GlobalContext);
@@ -112,48 +114,42 @@ const About = () => {
         globalDispatch({ type: 'target_box', payload: '' });
 
         Service.aboutUs(locale)
-            .then((resData) => setPageData(resData));
+            .then((resData) => {
+
+                const { supportModels, supportFormats, supportRenders, ...rest } = resData;
+                setPageData(rest);
+                setSupport({
+                    model: supportModels,
+                    software: supportFormats,
+                    render: supportRenders,
+                });
+
+            });
 
     }, [globalDispatch, locale]);
 
-    const {
-        title,
-        description,
-        imgUrl,
-        supportModels,
-        supportFormats,
-        supportRenders,
-    } = pageData;
-
-    const support = {
-        model: supportModels,
-        software: supportFormats,
-        render: supportRenders,
-    };
+    console.log('pageData:', pageData)
 
     return (
 
         <Fragment>
-            <ContentHeader
-                title={deftags.about_title}
-                description={deftags.og_description}
-            />
+            <SEO title={deftags.about_title} />
 
-            <BannerLayout data-section="banner">
+            {/* <BannerLayout data-section="banner">
                 <div className="thumb">
                     <img
-                        src={imgUrl}
-                        alt={title}
+                        src={pageData.imgUrl}
+                        alt={pageData.title}
                         width="1200"
                         height="396"
                     />
                 </div>
 
                 <div className="description">
-                    <h1 className="title">{title}</h1>
-                    <p>{description}</p>
+                    <h1 className="title">{pageData.title}</h1>
+                    <p>{pageData.description}</p>
                 </div>
-            </BannerLayout>
+            </BannerLayout> */}
 
             <SupportLayout
                 container
@@ -162,18 +158,18 @@ const About = () => {
                 data-section="support"
             >
                 {
-                    Object.keys(support).map((key) => (
+                    // Object.keys(support).map((key) => (
 
-                        <Grid
-                            key={key}
-                            item
-                            xs={4}
-                        >
-                            <p className="count">{support[key]}</p>
-                            {deftags[`about_support_${key}`]}
-                        </Grid>
+                    //     <Grid
+                    //         key={key}
+                    //         item
+                    //         xs={4}
+                    //     >
+                    //         <p className="count">{support[key]}</p>
+                    //         {deftags[`about_support_${key}`]}
+                    //     </Grid>
 
-                    ))
+                    // ))
                 }
             </SupportLayout>
         </Fragment>

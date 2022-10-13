@@ -50,7 +50,7 @@ const util = {
                 // result: 1
                 ({ data }) => {
 
-                    resolve(condi ? data.data : data);
+                    resolve(data.data);
 
                 },
                 // result: 0
