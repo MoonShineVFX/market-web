@@ -35,26 +35,47 @@ const Links = ({
     className,
     children,
     ...rest
-}) => {
+}) => (
 
-    return (
+    <Link
+        to={url}
+        title={title}
+        className={className}
+        {...newPage && {
+            target: '_blank',
+            rel: 'noreferrer noopener',
+        }}
+        {...rest}
+    >
+        {children}
+    </Link>
 
-        <Link
-            to={url}
-            title={title}
-            className={className}
-            {...newPage && {
-                target: '_blank',
-                rel: 'noreferrer noopener',
-            }}
-            {...rest}
-        >
-            {children}
-        </Link>
+);
 
-    );
+// Route 為巢狀，若是外部網址則會受影響，需要用原生 a tag
+const ExtraLink = ({
+    url,
+    newPage,
+    title,
+    className,
+    children,
+    ...rest
+}) => (
 
-};
+    <a
+        href={url}
+        title={title}
+        className={className}
+        {...newPage && {
+            target: '_blank',
+            rel: 'noreferrer noopener',
+        }}
+        {...rest}
+    >
+        {children}
+    </a>
+
+);
 
 //
 const ButtonLink = ({ url, text, type, ...rest }) => {
@@ -89,6 +110,19 @@ Links.propTypes = {
     children: PropTypes.any,
 };
 
+ExtraLink.defaultProps = {
+    url: '',
+    newPage: false,
+};
+
+ExtraLink.propTypes = {
+    url: PropTypes.string.isRequired,
+    newPage: PropTypes.bool,
+    title: PropTypes.string,
+    className: PropTypes.string,
+    children: PropTypes.any,
+};
+
 ButtonLink.defaultProps = {
     text: '回首頁',
     type: 'default',
@@ -103,4 +137,5 @@ ButtonLink.propTypes = {
 export {
     Links as default,
     ButtonLink,
+    ExtraLink,
 };

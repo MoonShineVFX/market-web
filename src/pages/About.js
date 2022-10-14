@@ -4,14 +4,15 @@ import {
     useEffect,
     useState,
 } from 'react';
+import { useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
 import { styled } from '@mui/system';
 
 import SEO from '../containers/SEO';
 import { GlobalContext } from '../context/global.state';
-import util from '../utils/util';
 import Service from '../utils/util.service';
 
+//
 const BannerLayout = styled('section')(({ theme }) => ({
     fontSize: '1.25em',
     marginBottom: '40px',
@@ -99,43 +100,47 @@ const SupportLayout = styled(Grid)(({ theme }) => ({
 const About = () => {
 
     // Context
-    const { locale, deftags } = useContext(GlobalContext);
+    const { deftags, globalDispatch } = useContext(GlobalContext);
+
+    // Hook
+    const { locale } = useParams();
 
     // State
+    const [isDefer, setIsDefer] = useState(true);
     const [pageData, setPageData] = useState(null);
     const [support, setSupport] = useState(null);
-
-    // Context
-    const { globalDispatch } = useContext(GlobalContext);
 
     useEffect(() => {
 
         globalDispatch({ type: 'sidenav', payload: false });
         globalDispatch({ type: 'target_box', payload: '' });
 
-        Service.aboutUs(locale)
-            .then((resData) => {
+        const fetchData = async() => {
 
-                const { supportModels, supportFormats, supportRenders, ...rest } = resData;
-                setPageData(rest);
-                setSupport({
-                    model: supportModels,
-                    software: supportFormats,
-                    render: supportRenders,
-                });
+            const data = await Service.aboutUs(locale);
+            const { supportModels, supportFormats, supportRenders, ...rest } = data;
 
+            setPageData(rest);
+            setSupport({
+                model: supportModels,
+                software: supportFormats,
+                render: supportRenders,
             });
+
+            if (data) setIsDefer(false);
+
+        };
+
+        fetchData();
 
     }, [globalDispatch, locale]);
 
-    console.log('pageData:', pageData)
-
-    return (
+    return !isDefer && (
 
         <Fragment>
             <SEO title={deftags.about_title} />
 
-            {/* <BannerLayout data-section="banner">
+            <BannerLayout data-section="banner">
                 <div className="thumb">
                     <img
                         src={pageData.imgUrl}
@@ -149,7 +154,7 @@ const About = () => {
                     <h1 className="title">{pageData.title}</h1>
                     <p>{pageData.description}</p>
                 </div>
-            </BannerLayout> */}
+            </BannerLayout>
 
             <SupportLayout
                 container
@@ -158,18 +163,18 @@ const About = () => {
                 data-section="support"
             >
                 {
-                    // Object.keys(support).map((key) => (
+                    Object.keys(support).map((key) => (
 
-                    //     <Grid
-                    //         key={key}
-                    //         item
-                    //         xs={4}
-                    //     >
-                    //         <p className="count">{support[key]}</p>
-                    //         {deftags[`about_support_${key}`]}
-                    //     </Grid>
+                        <Grid
+                            key={key}
+                            item
+                            xs={4}
+                        >
+                            <p className="count">{support[key]}</p>
+                            {deftags[`about_support_${key}`]}
+                        </Grid>
 
-                    // ))
+                    ))
                 }
             </SupportLayout>
         </Fragment>

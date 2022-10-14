@@ -1,28 +1,24 @@
 import { useContext } from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import Frame from './Frame';
+import { Navigate, Outlet, useParams } from 'react-router-dom';
 import { GlobalContext } from '../context/global.state';
 
-const PublicLayout = () => {
+const GuestLayout = () => {
 
     // Context
     const { user } = useContext(GlobalContext);
 
+    // Hook
+    const { locale } = useParams();
+
     // 已登入導去首頁
     if (user) {
 
-        return <Navigate to={'/'} replace />;
+        return <Navigate to={`/${locale}`} replace />;
 
     }
 
-    return (
-
-        <Frame>
-            <Outlet />
-        </Frame>
-
-    );
+    return <Outlet />;
 
 };
 
-export default PublicLayout;
+export default GuestLayout;

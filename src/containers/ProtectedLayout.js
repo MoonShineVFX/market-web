@@ -1,22 +1,23 @@
-import { Navigate, Outlet } from 'react-router-dom';
-import Frame from './Frame';
+import { useContext } from 'react';
+import { Navigate, Outlet, useParams } from 'react-router-dom';
+import { GlobalContext } from '../context/global.state';
 
 const ProtectedLayout = () => {
 
-    // 未登入導去登入頁
-    // if (!userInfo) {
+    // Context
+    const { user } = useContext(GlobalContext);
 
-    //     return <Navigate to={'/signin'} replace />;
+    // Hook
+    const { locale } = useParams();
+
+    // 未登入導去登入頁
+    // if (!user) {
+
+    //     return <Navigate to={`/${locale}/singin`} replace />;
 
     // }
 
-    return (
-
-        <Frame>
-            <Outlet />
-        </Frame>
-
-    );
+    return <Outlet />;
 
 };
 

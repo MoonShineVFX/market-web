@@ -1,13 +1,13 @@
 import { useContext } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/system';
-import Links from './Links';
+import { ExtraLink } from './Links';
 import { GlobalContext } from '../context/global.state';
 import util from '../utils/util';
 
 const { priceWithCommas, formatBytes } = util;
 
-const ItemLayout = styled(Links)(({ theme }) => ({
+const ItemLayout = styled(ExtraLink)(({ theme }) => ({
     color: theme.palette.textColor,
     textDecoration: 'none',
     '.item-content': {

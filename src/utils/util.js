@@ -8,7 +8,7 @@ const { currency_tw } = deftag;
 const util = {
     /**
      * @author Betty
-     * @param  {object{} || string} service - 如果是字串，則為 service.url
+     * @param  {string || object{}} service - 如果是物件，則為 service.url
      *   @param {string} service.url
      *   @param {string} [service.method = 'post']
      *   @param {string} [service.dataType = 'json']
@@ -19,7 +19,7 @@ const util = {
     serviceProxy: (service, reqData = {}, option) => {
 
         // 檢查物件或字串
-        const condi = (typeof service === 'string');
+        const serviceType = (typeof service === 'object');
 
         // method, url 與環境設定
         const showErrorMesg = (message, callback) => {
@@ -38,11 +38,11 @@ const util = {
             };
 
             axios({
+                method: 'post',
                 baseURL: (process.env.NODE_ENV === 'development') ? `https://${process.env.REACT_APP_HOST}/api` : '/api',
                 url: service,
-                method: 'post',
-                ...condi && { data: reqData },
-                ...service,
+                data: reqData,
+                ...serviceType && { ...service },
                 ...option,
                 ...(Cookies.get()?.token) && { ...authHeader },
             })
@@ -71,16 +71,7 @@ const util = {
 
     },
 
-    serviceServer: ({ method = 'post', url, headers }) => {
-
-        return axios({
-            baseURL: `https://${process.env.HOST}/api`,
-            url,
-            method,
-            ...headers && { headers: { ...headers } }, // 有傳 headers 才送
-        });
-
-    },
+    loader: (delay = 500) => new Promise((resolve) => setTimeout(resolve, delay)),
 
     /**
      * @author Betty

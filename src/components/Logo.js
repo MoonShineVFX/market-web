@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import { styled } from '@mui/system';
 import Links from './Links';
 import { GlobalContext } from '../context/global.state';
@@ -22,11 +23,14 @@ const Logo = ({ ...rest }) => {
     // Context
     const { deftags } = useContext(GlobalContext);
 
+    // Hook
+    const { locale } = useParams();
+
     return (
 
         <LogoLayout {...rest}>
             <Links
-                url="/"
+                url={`/${locale}`}
                 className="logo-text"
                 title={deftags.text_logo}
             >

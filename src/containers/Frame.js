@@ -26,6 +26,7 @@ const Frame = ({ children }) => (
         </Box>
         <Footer />
     </Fragment>
+
 );
 
 export default Frame;

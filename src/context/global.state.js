@@ -4,6 +4,7 @@ import React, {
     useEffect,
     useState,
 } from 'react';
+import { useParams } from 'react-router-dom';
 import Service from '../utils/util.service';
 
 import {
@@ -14,7 +15,6 @@ import {
 
 // Global
 const globalInitState = {
-    locale: 'zh',
     deftags: null,
     user: null,
     tags: [],
@@ -46,11 +46,13 @@ const GlobalContext = createContext(null);
 // Provider
 const GlobalProvider = ({ children }) => {
 
+    // Hook
+    const { locale } = useParams();
+
     const [globalState, globalDispatch] = useReducer(globalReducer, globalInitState);
     const [formStorageState, formStorageDispatch] = useReducer(formStorageReducer, formStorageInitState);
     const [lightboxState, lightboxDispatch] = useReducer(lightboxReducer, lightboxInitState);
     const {
-        locale,
         deftags,
         user,
         tags,
@@ -70,20 +72,16 @@ const GlobalProvider = ({ children }) => {
     const { Provider } = GlobalContext;
 
     // State
-    const [loading, setLoading] = useState(true);
+    const [isDefer, setIsDefer] = useState(true);
 
     useEffect(() => {
 
         const fetchData = async() => {
 
-            // 取得語系包
-            const langs = await Service.langs();
-
             // 取得使用者資訊
             const data = await Service.common();
             const { tags, ...rest } = data;
 
-            globalDispatch({ type: 'lang_config', payload: langs[locale] });
             globalDispatch({
                 type: 'global_data',
                 payload: {
@@ -92,7 +90,7 @@ const GlobalProvider = ({ children }) => {
                 },
             });
 
-            if (data) setLoading(false);
+            if (data) setIsDefer(false);
 
         };
 
@@ -100,42 +98,37 @@ const GlobalProvider = ({ children }) => {
 
     }, [locale]);
 
-    return (
+    return !isDefer && (
 
-        !loading && (
+        <Provider value={{
+            // 全域資料
+            deftags,
+            user,
+            tags,
+            slideshowActive,
+            logged,
+            targetBox,
+            targetPopup,
+            sideNav,
+            snackbar,
+            cart,
+            dynamicAction,
+            isVerified,
 
-            <Provider value={{
-                // 全域資料
-                locale,
-                deftags,
-                user,
-                tags,
-                slideshowActive,
-                logged,
-                targetBox,
-                targetPopup,
-                sideNav,
-                snackbar,
-                cart,
-                dynamicAction,
-                isVerified,
+            // Form 表單暫存
+            formStorageData,
 
-                // Form 表單暫存
-                formStorageData,
+            // Lightbox
+            visible,
+            currEvent,
 
-                // Lightbox
-                visible,
-                currEvent,
-
-                // Dispatch
-                globalDispatch,
-                formStorageDispatch,
-                lightboxDispatch,
-            }}>
-                {children}
-            </Provider>
-
-        )
+            // Dispatch
+            globalDispatch,
+            formStorageDispatch,
+            lightboxDispatch,
+        }}>
+            {children}
+        </Provider>
 
     );
 

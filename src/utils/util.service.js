@@ -9,10 +9,7 @@ const Service = {
         method: 'get',
         url: `/about_us?lang=${reqData}`,
     }),
-    tutorial: (reqData) => util.serviceProxy({
-        method: 'get',
-        url: `/tutorials?lang=${reqData}`,
-    }),
+    tutorial: (reqData) => util.serviceProxy(`/tutorials?lang=${reqData}`),
 
     // 未登入 (註冊、登入、忘記密碼、重設密碼)
     signin: ({ reqData, headers }) => util.serviceProxy('/login', reqData, {
