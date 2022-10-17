@@ -11,6 +11,16 @@ const Service = {
     }),
     tutorial: (reqData) => util.serviceProxy(`/tutorials?lang=${reqData}`),
 
+    // 商品
+    productList: (reqData) => util.serviceProxy({
+        method: 'get',
+        url: `/products?page=${reqData.page}&lang=${reqData.locale}`,
+    }),
+    productDetail: (reqData) => util.serviceProxy({
+        method: 'get',
+        url: `/products/${reqData.id}?lang=${reqData.locale}`,
+    }),
+
     // 未登入 (註冊、登入、忘記密碼、重設密碼)
     signin: ({ reqData, headers }) => util.serviceProxy('/login', reqData, {
         headers: { ...headers },

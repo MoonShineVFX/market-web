@@ -21,7 +21,7 @@ const GoogleSigninLayout = styled(GoogleLogin)({
 //
 const SigninGoogle = () => {
 
-    // Router
+    // Route
     const navigate = useNavigate();
 
     // Context

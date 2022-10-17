@@ -12,6 +12,9 @@ const utilConst = {
             icon: faEye,
         }
     },
+
+    // 語系
+    locales: ['zh', 'en', 'jp', 'cn'],
 };
 
 export default utilConst;

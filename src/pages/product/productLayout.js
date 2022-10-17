@@ -1,6 +1,6 @@
 import { styled } from '@mui/system';
 import { GlobalStyles, Grid, ListItemButton } from '@mui/material';
-import ItemsWrap from '../ItemsWrap';
+import ItemsWrap from '../../components/ItemsWrap';
 
 const detailStyles = {
     '.Model-container': {

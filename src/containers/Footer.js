@@ -1,20 +1,32 @@
 import { Fragment, useContext } from 'react';
-
-import dayjs from 'dayjs';
+import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { Grid, useMediaQuery } from '@mui/material';
+import dayjs from 'dayjs';
 import { FooterLayout, LangOptionLayout } from './globalLayout';
 import Links from '../components/Links';
 import Community from '../components/Community';
 import { GlobalContext } from '../context/global.state';
+import utilConst from '../utils/util.const';
+
+const { locales } = utilConst;
 
 // 語系選單
-const LangOption = ({ deftag }) => {
+const LangOption = () => {
+
+    // Route
+    const navigate = useNavigate();
+    const location = useLocation();
+    const params = useParams();
+
+    // Context
+    const { deftags } = useContext(GlobalContext);
 
     // 選取語言
     const handleSelected = ({ target: { value } }) => {
 
-        // url 更新
-        // router.push(router.asPath, router.asPath, { locale: value });
+        const regex = new RegExp(params.locale, 'gi');
+        const pathname = `${location.pathname.replace(regex, value)}${location.search}`;
+        navigate(pathname);
 
     };
 
@@ -22,23 +34,22 @@ const LangOption = ({ deftag }) => {
 
         <LangOptionLayout
             name="lang"
-            // defaultValue={router.locale}
+            defaultValue={params.locale}
             onChange={handleSelected}
         >
-            123
             {
-                // router.locales.map((code) => (
+                locales.map((code) => (
 
-                //     // 僅支援繁中與英文
-                //     (code === 'zh' || code === 'en') &&
-                //         <option
-                //             key={code}
-                //             value={code}
-                //         >
-                //             {deftag[`lang_${code}`]}
-                //         </option>
+                    // 僅支援繁中與英文
+                    (code === 'zh' || code === 'en') &&
+                        <option
+                            key={code}
+                            value={code}
+                        >
+                            {deftags[`lang_${code}`]}
+                        </option>
 
-                // ))
+                ))
             }
         </LangOptionLayout>
 
