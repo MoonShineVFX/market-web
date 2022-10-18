@@ -1,5 +1,4 @@
 import { useContext } from 'react';
-import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/system';
 import { ExtraLink } from './Links';
@@ -88,16 +87,13 @@ const Item = ({
     ...rest
 }) => {
 
-    // Route
-    const { locale } = useParams();
-
     // Context
     const { deftags } = useContext(GlobalContext);
 
     return (
 
         <ItemLayout
-            url={`/${locale}${url}`}
+            url={url}
             {...newPage && { target: '_blank'}}
             className={`item style-${type} Model-effect-brightness`}
             title={title}

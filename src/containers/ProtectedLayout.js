@@ -11,7 +11,7 @@ const ProtectedLayout = () => {
     const { user } = useContext(GlobalContext);
 
     // 未登入導去登入頁
-    // if (!user) {
+    // if (!user.email) {
 
     //     return <Navigate to={`/${locale}/singin`} replace />;
 

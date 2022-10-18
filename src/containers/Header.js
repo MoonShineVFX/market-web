@@ -1,4 +1,5 @@
 import { useEffect, useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import TawkTo from 'tawkto-react';
 import { Box, useMediaQuery } from '@mui/material';
 import { faShoppingCart, faThLarge } from '@fortawesome/free-solid-svg-icons';
@@ -22,6 +23,7 @@ import Service from '../utils/util.service';
 import useLocalStorage from '../hooks/useLocalStorage';
 import useGoogleAnalytics from '../hooks/useGoogleAnalytics';
 
+// 整理購物車資料結構
 const arrangeCartList = (array) => array.reduce((acc, obj) => {
 
     acc[obj.productId] = acc[obj.productId] || {};
@@ -36,6 +38,9 @@ const arrangeCartList = (array) => array.reduce((acc, obj) => {
 const Header = () => {
 
     useGoogleAnalytics();
+
+    // Route
+    const { locale } = useParams();
 
     // Context
     const {
@@ -144,7 +149,7 @@ const Header = () => {
                         ) : (
 
                             <ButtonLink
-                                url="/signin"
+                                url={`/${locale}/signin`}
                                 text={deftags.text_signin}
                             />
 

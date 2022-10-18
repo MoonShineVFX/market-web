@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 import { useForm } from 'react-hook-form';
-import { BtnDirectLayout } from '../member/memberSignLayout';
+import { BtnDirectLayout } from '../guest/memberSignLayout';
 import { BoxWrapLayout } from './accountLayout';
 import Buttons from '../../components/Buttons';
 import { FormRow } from '../../components/FormWrap';

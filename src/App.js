@@ -1,5 +1,6 @@
 import { ThemeProvider } from '@mui/material/styles';
 import { GlobalStyles } from '@mui/material';
+import { GoogleOAuthProvider } from '@react-oauth/google';
 import { GoogleReCaptchaProvider } from 'react-google-recaptcha-v3';
 import { HelmetProvider } from 'react-helmet-async';
 import '@fortawesome/fontawesome-svg-core/styles.css';
@@ -118,9 +119,11 @@ const PageRoute = () => (
 
         <HelmetProvider>
             <GlobalProvider>
-                <GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCHA_KEY}>
-                    <Routes />
-                </GoogleReCaptchaProvider>
+                {/* <GoogleOAuthProvider clientId={process.env.REACT_APP_GOOGLE_SIGNIN_CLIENTID}> */}
+                    <GoogleReCaptchaProvider reCaptchaKey={process.env.REACT_APP_RECAPTCHA_KEY}>
+                        <Routes />
+                    </GoogleReCaptchaProvider>
+                {/* </GoogleOAuthProvider> */}
             </GlobalProvider>
         </HelmetProvider>
     </ThemeProvider>

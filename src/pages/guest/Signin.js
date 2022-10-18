@@ -4,43 +4,51 @@ import {
     useEffect,
     useState,
 } from 'react';
+import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
-// import {
-//     SignLayout,
-//     BtnDirectLayout,
-//     ForgotPasswordLayout,
-// } from '../src/components/member/memberSignLayout';
-// import Head from '../src/containers/Head';
-// import Buttons from '../src/components/Buttons';
-// import FontIcon from '../src/components/FontIcon';
-// import Links from '../src/components/Links';
-// import FormWrap, { FormRow } from '../src/components/FormWrap';
-// import SigninGoogle from '../src/components/third-party/SigninGoogle';
+import {
+    SignLayout,
+    BtnDirectLayout,
+    ForgotPasswordLayout,
+} from './memberSignLayout';
+import SEO from '../../containers/SEO';
+import Buttons from '../../components/Buttons';
+import FontIcon from '../../components/FontIcon';
+import Links from '../../components/Links';
+import FormWrap, { FormRow } from '../../components/FormWrap';
+import SigninGoogle from './SigninGoogle';
 
-// import { GlobalContext } from '../src/context/global.state';
-// import util from '../src/utils/util';
-// import utilConst from '../src/utils/util.const';
-// import Service from '../src/utils/util.service';
-// import useReCaptchaVerify from '../src/utils/useReCaptchaVerify';
+import { GlobalContext } from '../../context/global.state';
+import util from '../../utils/util';
+import utilConst from '../../utils/util.const';
+import Service from '../../utils/util.service';
+import useReCaptchaVerify from '../../hooks/useReCaptchaVerify';
 
-// const { redirectTo } = util;
-// const { paswdConfig } = utilConst;
+const { redirectTo } = util;
+const { paswdConfig } = utilConst;
 
-const Signin = ({ langs }) => {
+const Signin = () => {
 
-    // // Context
-    // const { isVerified, globalDispatch } = useContext(GlobalContext);
+    // Route
+    const { locale } = useParams();
 
-    // // Hook
-    // const [token, handleGetToken] = useReCaptchaVerify(null);
+    // Context
+    const {
+        deftags,
+        isVerified,
+        globalDispatch,
+    } = useContext(GlobalContext);
 
-    // useEffect(() => {
+    // Hook
+    const [token, handleGetToken] = useReCaptchaVerify(null);
 
-    //     globalDispatch({ type: 'sidenav', payload: false });
-    //     globalDispatch({ type: 'target_box', payload: '' });
+    useEffect(() => {
 
-    // }, []);
+        globalDispatch({ type: 'sidenav', payload: false });
+        globalDispatch({ type: 'target_box', payload: '' });
+
+    }, [globalDispatch]);
 
     // React Hook Form
     const {
@@ -66,27 +74,23 @@ const Signin = ({ langs }) => {
     };
 
     // 送資料
-    // const handleReqData = (reqData) => {
+    const handleReqData = (reqData) => {
 
-    //     let auth = btoa(`${reqData.email}:${reqData.password}`);
-    //     Service.signin({
-    //         reqData: { recaptcha: token },
-    //         headers: { Authorization: `Basic ${auth}`},
-    //     }).then(redirectTo);
+        let auth = btoa(`${reqData.email}:${reqData.password}`);
+        Service.signin({
+            reqData: { recaptcha: token },
+            headers: { Authorization: `Basic ${auth}`},
+        }).then(redirectTo);
 
-    // };
+    };
 
     return (
 
         <Fragment>
-            Login
-            {/* <Head
-                title={langs.text_signin}
-                description={langs.og_description}
-            />
+            <SEO title={deftags.text_signin} />
 
             <SignLayout>
-                <FormWrap title={langs.text_signin_title}>
+                <FormWrap title={deftags.text_signin_title}>
                     <form onSubmit={handleSubmit(handleReqData)}>
                         <FormRow
                             name="email"
@@ -95,7 +99,7 @@ const Signin = ({ langs }) => {
                             <input
                                 type="text"
                                 name="email"
-                                placeholder={langs.text_account}
+                                placeholder={deftags.text_account}
                                 {...register('email', { required: true })}
                             />
                         </FormRow>
@@ -108,16 +112,16 @@ const Signin = ({ langs }) => {
                             <input
                                 type={paswdConfig[toggle.password].type}
                                 name="password"
-                                placeholder={langs.text_password}
+                                placeholder={deftags.text_password}
                                 {...register('password', {
                                     required: true,
                                     minLength: {
                                         value: 8,
-                                        message: langs.error_password_at_least_eight,
+                                        message: deftags.error_password_at_least_eight,
                                     },
                                     pattern: {
-                                        value: /^(?=.*\d)[0-9a-zA-Z!\u0022#$%&'()*+,./:;<=>?@[\]\^_`{|}~-]{8,}$/g,
-                                        message: langs.error_pattern,
+                                        value: /^(?=.*\d)[0-9a-zA-Z!\u0022#$%&'()*+,./:;<=>?@[\]^_`{|}~-]{8,}$/g,
+                                        message: deftags.error_pattern,
                                     },
                                 })}
                             />
@@ -129,14 +133,14 @@ const Signin = ({ langs }) => {
 
                         <div className="form-row form-row-btns">
                             <Buttons
-                                text={langs.btn_verify}
+                                text={deftags.btn_verify}
                                 disabled={isVerified}
                                 onClick={handleGetToken}
                             />
 
                             <Buttons
                                 type="submit"
-                                text={langs.text_signin}
+                                text={deftags.text_signin}
                                 disabled={!isVerified}
                             />
 
@@ -144,24 +148,24 @@ const Signin = ({ langs }) => {
 
                             <ForgotPasswordLayout>
                                 <Links
-                                    url="/forgot_password"
-                                    title={langs.text_forgot_password}
+                                    url={`/${locale}/forgot_password`}
+                                    title={deftags.text_forgot_password}
                                     data-link="forgot-password"
                                 >
-                                    {langs.text_forgot_password}
+                                    {deftags.text_forgot_password}
                                 </Links>
                             </ForgotPasswordLayout>
 
                             <BtnDirectLayout
                                 type="third"
-                                url="/register"
+                                url={`/${locale}/register`}
                                 className="btn-register"
-                                text={langs.text_register}
+                                text={deftags.text_register}
                             />
                         </div>
                     </form>
                 </FormWrap>
-            </SignLayout> */}
+            </SignLayout>
         </Fragment>
 
     );

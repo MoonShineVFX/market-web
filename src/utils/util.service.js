@@ -11,6 +11,7 @@ const Service = {
         url: `/about_us?lang=${reqData}`,
     }),
     tutorial: (reqData) => util.serviceProxy(`/tutorials?lang=${reqData}`),
+    privacy: (reqData) => util.serviceProxy(`/privacy?lang=${reqData}`),
 
     // 商品
     productList: (reqData) => util.serviceProxy({
@@ -29,6 +30,10 @@ const Service = {
     register: (reqData) => util.serviceProxy('/register', reqData),
     forgotPassword: (reqData) => util.serviceProxy('/forget_password', reqData),
     resetPassword: (reqData) => util.serviceProxy('/reset_password', reqData),
+    activeAccount: (reqData) => util.serviceProxy({
+        method: 'get',
+        url: `/active_account?uid=${reqData.uid}&token=${reqData.token}`,
+    }),
 
     // 第三方註冊/登入
     signWithGoogle: (reqData) => util.serviceProxy('/google_login', reqData),

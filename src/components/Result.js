@@ -5,8 +5,8 @@ import {
     TitleLayout,
     SectionLayout,
     CartLayout,
-} from './cart/cartLayout';
-import Head from '../containers/Head';
+} from '../pages/cart/cartLayout';
+import SEO from '../containers/SEO';
 import { ButtonLink } from './Links';
 import FontIcon from './FontIcon';
 
@@ -47,7 +47,7 @@ const Result = ({
 }) => (
 
     <Fragment>
-        <Head title={title} />
+        <SEO title={title} />
         <TitleWrapLayout {...icon && { className: 'withIcon' }}>
             {title}
             {icon && <div className="status"><FontIcon icon={icon} /></div>}

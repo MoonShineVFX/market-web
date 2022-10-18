@@ -61,6 +61,9 @@ const LangOption = () => {
 //
 const Footer = () => {
 
+    // Route
+    const { locale } = useParams();
+
     // Context
     const { deftags } = useContext(GlobalContext);
 
@@ -95,9 +98,9 @@ const Footer = () => {
                                 <div className="top">
                                     <div className="link">
                                         <Links
-                                            url="/privacy"
-                                            newPage
+                                            url={`/${locale}/privacy`}
                                             className="light privacy-link"
+                                            newPage
                                         >
                                             {deftags.text_privacy}
                                         </Links>
@@ -114,7 +117,7 @@ const Footer = () => {
                                 <div className="top">
                                     <span>Copyright © {dayjs().format('YYYY')} Moonshine. All rights reserved.</span>
                                     <Links
-                                        url="/privacy"
+                                        url={`/${locale}/privacy`}
                                         newPage
                                         className="light privacy-link"
                                         title={deftags.text_privacy}

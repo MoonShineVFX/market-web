@@ -1,6 +1,6 @@
 import { styled } from '@mui/system';
-import Links from '../Links';
-import FormWrap, { FormRow } from '../FormWrap';
+import Links from '../../components/Links';
+import FormWrap from '../../components/FormWrap';
 
 // 外層 form
 const TitleLayout = styled('h1')(({ theme }) => ({

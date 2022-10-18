@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import { useMediaQuery } from '@mui/material';
 import {
     BannerWrapLayout,
@@ -11,6 +12,9 @@ import { GlobalContext } from '../../context/global.state';
 import useGoogleAnalytics from '../../utils/useGoogleAnalytics';
 
 const Banner = ({ pageData }) => {
+
+    // Route
+    const { locale } = useParams();
 
     // Context
     const { slideshowActive } = useContext(GlobalContext);
@@ -43,7 +47,7 @@ const Banner = ({ pageData }) => {
                         >
                             <div className="inner">
                                 <Links
-                                    url={`/product/${productId}`}
+                                    url={`/${locale}/product/${productId}`}
                                     title={title}
                                     className="thumb"
                                     newPage

@@ -10,7 +10,7 @@ export default function useGoogleAnalytics () {
     // init
     const init = () => {
 
-        ReactGA.initialize(process.env.NEXT_PUBLIC_GAID);
+        ReactGA.initialize(process.env.REACT_APP_GAID);
 
     };
 

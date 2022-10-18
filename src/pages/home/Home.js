@@ -13,13 +13,12 @@ import {
     ItemTutorialLayout,
 } from './homeLayout';
 import SEO from '../../containers/SEO';
-import Links from '../../components/Links';
+import { ExtraLink } from '../../components/Links';
 import ItemsWrap from '../../components/ItemsWrap';
 import Item from '../../components/Item';
 import Banner from './Banner';
 
 import { GlobalContext } from '../../context/global.state';
-import util from '../../utils/util';
 import Service from '../../utils/util.service';
 import useGoogleAnalytics from '../../utils/useGoogleAnalytics';
 
@@ -92,7 +91,7 @@ const Home = () => {
                                 <Item
                                     width="277"
                                     height="336"
-                                    url={`/product/${id}`}
+                                    url={`/${locale}/product/${id}`}
                                     data={{ title, price, imgUrl }}
                                     newPage
                                     onClick={() => eventTracker({
@@ -117,7 +116,7 @@ const Home = () => {
                     {
                         pageData.tutorials.map(({ id, title, description, imgUrl, link }) => (
 
-                            <Links
+                            <ExtraLink
                                 key={id}
                                 url={link}
                                 title={title}
@@ -136,7 +135,7 @@ const Home = () => {
                                     <h3 className="title">{title}</h3>
                                     <p>{description}</p>
                                 </div>
-                            </Links>
+                            </ExtraLink>
 
                         ))
                     }
