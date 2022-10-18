@@ -2,6 +2,7 @@ import { Fragment, useContext } from 'react';
 import { useNavigate, useLocation, useParams } from 'react-router-dom';
 import { Grid, useMediaQuery } from '@mui/material';
 import dayjs from 'dayjs';
+
 import { FooterLayout, LangOptionLayout } from './globalLayout';
 import Links from '../components/Links';
 import Community from '../components/Community';

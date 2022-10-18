@@ -20,11 +20,11 @@ const LogoLayout = styled('span')(({ theme }) => ({
 //
 const Logo = ({ ...rest }) => {
 
+    // Route
+    const { locale } = useParams();
+
     // Context
     const { deftags } = useContext(GlobalContext);
-
-    // Hook
-    const { locale } = useParams();
 
     return (
 

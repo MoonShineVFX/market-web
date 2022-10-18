@@ -7,7 +7,7 @@ const GuestLayout = () => {
     // Context
     const { user } = useContext(GlobalContext);
 
-    // Hook
+    // Route
     const { locale } = useParams();
 
     // 已登入導去首頁

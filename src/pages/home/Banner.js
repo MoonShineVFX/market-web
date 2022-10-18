@@ -6,7 +6,7 @@ import {
     SlideShowItemLayout,
     SlideshowInfoLayout,
 } from './homeLayout';
-import Links from '../Links';
+import Links from '../../components/Links';
 import { GlobalContext } from '../../context/global.state';
 import useGoogleAnalytics from '../../utils/useGoogleAnalytics';
 

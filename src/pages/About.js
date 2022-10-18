@@ -99,11 +99,11 @@ const SupportLayout = styled(Grid)(({ theme }) => ({
 //
 const About = () => {
 
+    // Route
+    const { locale } = useParams();
+
     // Context
     const { deftags, globalDispatch } = useContext(GlobalContext);
-
-    // Hook
-    const { locale } = useParams();
 
     // State
     const [isDefer, setIsDefer] = useState(true);

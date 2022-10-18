@@ -6,11 +6,11 @@ import Service from '../utils/util.service';
 
 const PublicLayout = () => {
 
+    // Route
+    const { locale } = useParams();
+
     // Context
     const { globalDispatch } = useContext(GlobalContext);
-
-    // Hook
-    const { locale } = useParams();
 
     // State
     const [isDefer, setIsDefer] = useState(true);

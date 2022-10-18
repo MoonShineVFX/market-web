@@ -100,7 +100,7 @@ const ProductList = () => {
                                         >
                                             <Item
                                                 type="product"
-                                                url={`/${params.locale}/product/${id}`}
+                                                url={`/product/${id}`}
                                                 width="321"
                                                 height="186"
                                                 data={{ title, price, imgUrl }}

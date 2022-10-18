@@ -70,11 +70,11 @@ const ItemWrapLayout = styled(Grid)(({ theme }) => ({
 //
 const Tutorial = () => {
 
+    // Route
+    const { locale } = useParams();
+
     // Context
     const { deftags, globalDispatch } = useContext(GlobalContext);
-
-    // Hook
-    const { locale } = useParams();
 
     // State
     const [isDefer, setIsDefer] = useState(true);

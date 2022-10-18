@@ -294,7 +294,7 @@ const ProductDetail = () => {
                                         className="itemWrap"
                                     >
                                         <Item
-                                            url={`/${params.locale}/product/${id}`}
+                                            url={`/product/${id}`}
                                             data={{ title, price, imgUrl }}
                                         />
                                     </div>

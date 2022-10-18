@@ -1,4 +1,5 @@
 import { useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/system';
 import { ButtonLink } from '../components/Links';
@@ -40,6 +41,9 @@ const ItemsWrap = ({
     ...rest
 }) => {
 
+    // Route
+    const { locale } = useParams();
+
     // Context
     const { deftags } = useContext(GlobalContext);
 
@@ -47,11 +51,11 @@ const ItemsWrap = ({
 
         <section {...rest}>
             <ItemsTitle>
-                <h2 className="title" suppressHydrationWarning={true}>{title}</h2>
+                <h2 className="title">{title}</h2>
                 {
                     showMore &&
                         <ButtonLink
-                            url={url}
+                            url={`/${locale}${url}`}
                             text={deftags.btn_show_more}
                             type="third"
                         />

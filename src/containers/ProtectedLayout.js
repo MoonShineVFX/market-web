@@ -4,11 +4,11 @@ import { GlobalContext } from '../context/global.state';
 
 const ProtectedLayout = () => {
 
+    // Route
+    const { locale } = useParams();
+
     // Context
     const { user } = useContext(GlobalContext);
-
-    // Hook
-    const { locale } = useParams();
 
     // 未登入導去登入頁
     // if (!user) {

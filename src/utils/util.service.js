@@ -5,6 +5,7 @@ const Service = {
     common: (reqData) => util.serviceProxy('/common', reqData),
     langs: (reqData) => util.serviceProxy('/lang_configs', reqData),
 
+    home: (reqData) => util.serviceProxy(`/index?lang=${reqData}`),
     aboutUs: (reqData) => util.serviceProxy({
         method: 'get',
         url: `/about_us?lang=${reqData}`,

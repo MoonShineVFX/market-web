@@ -1,45 +1,65 @@
-import { Fragment, useContext, useEffect } from 'react';
+import {
+    Fragment,
+    useContext,
+    useEffect,
+    useState,
+} from 'react';
+import { useParams } from 'react-router-dom';
 import { Grid } from '@mui/material';
-// import {
-//     homeStyles,
-//     ItemNewArrivalLayout,
-//     ItemTutorialLayout,
-// } from '../src/components/home/homeLayout';
 
-// import Head from '../src/containers/Head';
-// import Links from '../src/components/Links';
-// import ItemsWrap from '../src/components/ItemsWrap';
-// import Item from '../src/components/Item';
-// import Banner from '../src/components/home/Banner';
+import {
+    homeStyles,
+    ItemNewArrivalLayout,
+    ItemTutorialLayout,
+} from './homeLayout';
+import SEO from '../../containers/SEO';
+import Links from '../../components/Links';
+import ItemsWrap from '../../components/ItemsWrap';
+import Item from '../../components/Item';
+import Banner from './Banner';
 
-// import { GlobalContext } from '../src/context/global.state';
-// import util from '../src/utils/util';
-// import useGoogleAnalytics from '../src/utils/useGoogleAnalytics';
+import { GlobalContext } from '../../context/global.state';
+import util from '../../utils/util';
+import Service from '../../utils/util.service';
+import useGoogleAnalytics from '../../utils/useGoogleAnalytics';
 
-const Home = ({ langs, pageData }) => {
+const Home = () => {
+
+    // Route
+    const { locale } = useParams();
 
     // Context
-    // const { globalDispatch } = useContext(GlobalContext);
+    const { deftags, globalDispatch } = useContext(GlobalContext);
 
-    // // Hook
-    // const eventTracker = useGoogleAnalytics();
+    // State
+    const [isDefer, setIsDefer] = useState(true);
+    const [pageData, setPageData] = useState(null);
 
-    // useEffect(() => {
+    // Hook
+    const eventTracker = useGoogleAnalytics();
 
-    //     globalDispatch({ type: 'sidenav', payload: false });
-    //     globalDispatch({ type: 'target_box', payload: '' });
+    useEffect(() => {
 
-    // }, []);
+        globalDispatch({ type: 'sidenav', payload: false });
+        globalDispatch({ type: 'target_box', payload: '' });
 
-    return (
+        const fetchData = async() => {
+
+            const data = await Service.home(locale);
+            setPageData(data);
+            if (data) setIsDefer(false);
+
+        };
+
+        fetchData();
+
+    }, [globalDispatch, locale]);
+
+    return !isDefer && (
 
         <Fragment>
-            Home
-            {/* {homeStyles}
-            <Head
-                title={langs.home_title}
-                description={langs.og_description}
-            />
+            {homeStyles}
+            <SEO title={deftags.home_title} />
 
             {
                 !!pageData.banners.length &&
@@ -47,7 +67,7 @@ const Home = ({ langs, pageData }) => {
             }
 
             <ItemsWrap
-                title={langs.home_section_title01}
+                title={deftags.home_section_title01}
                 url="/product/list?page=1"
                 data-section="product"
             >
@@ -89,7 +109,7 @@ const Home = ({ langs, pageData }) => {
             </ItemsWrap>
 
             <ItemsWrap
-                title={langs.home_section_title02}
+                title={deftags.home_section_title02}
                 url="/tutorial"
                 data-section="tutorial"
             >
@@ -121,7 +141,7 @@ const Home = ({ langs, pageData }) => {
                         ))
                     }
                 </ItemTutorialLayout>
-            </ItemsWrap> */}
+            </ItemsWrap>
         </Fragment>
 
     );

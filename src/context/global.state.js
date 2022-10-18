@@ -46,7 +46,7 @@ const GlobalContext = createContext(null);
 // Provider
 const GlobalProvider = ({ children }) => {
 
-    // Hook
+    // Route
     const { locale } = useParams();
 
     const [globalState, globalDispatch] = useReducer(globalReducer, globalInitState);
