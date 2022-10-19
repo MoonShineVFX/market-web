@@ -31,20 +31,14 @@ const util = {
         // 回傳 promise
         return new Promise((resolve, reject) => {
 
-            const authHeader = {
-                headers: {
-                    Authorization: `Bearer ${Cookies.get('token')}`,
-                },
-            };
-
             axios({
+                withCredentials: true,
                 method: 'post',
                 baseURL: (process.env.NODE_ENV === 'development') ? `https://${process.env.REACT_APP_HOST}/api` : '/api',
                 url: service,
                 data: reqData,
                 ...serviceType && { ...service },
                 ...option,
-                ...(Cookies.get()?.token) && { ...authHeader },
             })
             .then(
                 // result: 1

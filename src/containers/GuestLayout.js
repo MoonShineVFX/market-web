@@ -11,7 +11,7 @@ const GuestLayout = () => {
     const { locale } = useParams();
 
     // 已登入導去首頁
-    if (user.email) {
+    if (user) {
 
         return <Navigate to={`/${locale}`} replace />;
 

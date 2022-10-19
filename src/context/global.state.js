@@ -86,7 +86,7 @@ const GlobalProvider = ({ children }) => {
                 type: 'global_data',
                 payload: {
                     tags,
-                    other: rest,
+                    other: rest.email && rest,
                 },
             });
 

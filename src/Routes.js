@@ -23,6 +23,8 @@ import ForgotPassword from './pages/guest/ForgotPassword';
 import ResetPassword from './pages/guest/ResetPassword';
 import ActiveAccount from './pages/guest/ActiveAccount';
 
+// import AccountCenter from './pages/member/AccountCenter';
+
 // Component
 import Loading from './components/Loading';
 
@@ -77,6 +79,7 @@ const PageRoute = () => {
                 <Route element={<ProtectedLayout />}>
                     <Route path="member" element={<>/member</>}>
                         <Route path="account" element={<>account</>} />
+                        {/* <Route path="account" element={<AccountCenter />} /> */}
                     </Route>
                 </Route>
 

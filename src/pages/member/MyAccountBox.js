@@ -1,12 +1,10 @@
 import { useContext } from 'react';
+import { useNavigate, useParams, redirect } from 'react-router-dom';
 import { styled } from '@mui/system';
 import Cookies from 'js-cookie';
-import Box from '../Box';
-import Links from '../Links';
+import Box from '../../components/Box';
+import Links from '../../components/Links';
 import { GlobalContext } from '../../context/global.state';
-import util from '../../utils/util';
-
-const { redirectTo } = util;
 
 //
 const MyAccountLayout = styled(Box)(({ theme }) => ({
@@ -27,6 +25,10 @@ const MyAccountLayout = styled(Box)(({ theme }) => ({
 
 //
 const MyAccountBox = () => {
+
+    // Route
+    const navigate = useNavigate();
+    const { locale } = useParams();
 
     // Context
     const { globalDispatch } = useContext(GlobalContext);
@@ -50,7 +52,7 @@ const MyAccountBox = () => {
         Cookies.remove('token');
         globalDispatch({ type: 'target_box', payload: '' });
         localStorage.removeItem('cartItem'); // 清除暫存購物車
-        redirectTo();
+        navigate(0); // 會導去登入頁
 
     };
 
@@ -62,7 +64,7 @@ const MyAccountBox = () => {
 
                     <Links
                         key={key}
-                        url={(key === 'logout') ? '#' : `/member/${key}`}
+                        url={(key === 'logout') ? '#' : `/${locale}/member/${key}`}
                         title={menus[key]}
                         className="menu-item"
                         onClick={(key === 'logout') ? handleClickLogout : handleClickAccount}

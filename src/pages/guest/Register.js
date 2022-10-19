@@ -5,6 +5,7 @@ import {
     useEffect,
     useState,
 } from 'react';
+import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import {
@@ -27,6 +28,9 @@ import Service from '../../utils/util.service';
 const { paswdConfig } = utilConst;
 
 const Register = () => {
+
+    // Route
+    const { locale } = useParams();
 
     // Context
     const {
@@ -119,7 +123,7 @@ const Register = () => {
                                         message: deftags.error_password_at_least_eight,
                                     },
                                     pattern: {
-                                        value: /^(?=.*\d)[0-9a-zA-Z!\u0022#$%&'()*+,./:;<=>?@[\]\^_`{|}~-]{8,}$/g,
+                                        value: /^(?=.*\d)[0-9a-zA-Z!\u0022#$%&'()*+,./:;<=>?@[\]^_`{|}~-]{8,}$/g,
                                         message: deftags.error_pattern,
                                     },
                                 })}
@@ -155,7 +159,7 @@ const Register = () => {
                                 name="agree"
                                 onChange={handleAgree}
                             >
-                                <AggreeLayout url="/privacy" newPage>{deftags.text_agree_privacy}</AggreeLayout>
+                                <AggreeLayout url={`/${locale}/privacy`} newPage>{deftags.text_agree_privacy}</AggreeLayout>
                             </Checkbox>
                         </div>
 
@@ -170,7 +174,7 @@ const Register = () => {
 
                             <BtnDirectLayout
                                 type="third"
-                                url="/signin"
+                                url={`/${locale}/signin`}
                                 text={deftags.btn_return_to_signin}
                             />
                         </div>

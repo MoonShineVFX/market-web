@@ -11,11 +11,11 @@ const ProtectedLayout = () => {
     const { user } = useContext(GlobalContext);
 
     // 未登入導去登入頁
-    // if (!user.email) {
+    if (!user) {
 
-    //     return <Navigate to={`/${locale}/singin`} replace />;
+        return <Navigate to={`/${locale}/signin`} replace />;
 
-    // }
+    }
 
     return <Outlet />;
 

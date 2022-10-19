@@ -4,7 +4,7 @@ import {
     useEffect,
     useState,
 } from 'react';
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 
 import {
@@ -20,17 +20,16 @@ import FormWrap, { FormRow } from '../../components/FormWrap';
 import SigninGoogle from './SigninGoogle';
 
 import { GlobalContext } from '../../context/global.state';
-import util from '../../utils/util';
 import utilConst from '../../utils/util.const';
 import Service from '../../utils/util.service';
 import useReCaptchaVerify from '../../hooks/useReCaptchaVerify';
 
-const { redirectTo } = util;
 const { paswdConfig } = utilConst;
 
 const Signin = () => {
 
     // Route
+    const navigate = useNavigate();
     const { locale } = useParams();
 
     // Context
@@ -80,7 +79,12 @@ const Signin = () => {
         Service.signin({
             reqData: { recaptcha: token },
             headers: { Authorization: `Basic ${auth}`},
-        }).then(redirectTo);
+        })
+        .then(() => {
+
+            navigate(`/${locale}`);
+
+        });
 
     };
 

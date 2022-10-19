@@ -15,7 +15,7 @@ import Logo from '../components/Logo';
 import FontIcon from '../components/FontIcon';
 import Navbar from './Navbar';
 import SideNavIcon from './SideNavIcon';
-import MyAccountBox from '../pages/member/MyAccount';
+import MyAccountBox from '../pages/member/MyAccountBox';
 import SideNav from './SideNav';
 
 import { GlobalContext } from '../context/global.state';
@@ -45,7 +45,7 @@ const Header = () => {
     // Context
     const {
         deftags,
-        logged,
+        user,
         targetBox,
         sideNav,
         cart,
@@ -75,7 +75,7 @@ const Header = () => {
         document.body.style.overflow = sideNav ? 'hidden' : '';
 
         // 有登入並更新當前登入者的購物車
-        if (logged) {
+        if (user) {
 
             Service.cartList()
                 .then(({ list }) => {
@@ -101,7 +101,7 @@ const Header = () => {
             },
         });
 
-    }, [logged, globalDispatch, sideNav]);
+    }, [globalDispatch, sideNav]);
 
     // 購物車與我的帳號 box
     const handleClickBox = (type) => {
@@ -130,7 +130,7 @@ const Header = () => {
                     alignItems: 'center',
                 }}>
                     <ShoppingCartLayout
-                        url={`/${logged ? 'cart' : 'signin'}`}
+                        url={`/${user ? 'cart' : 'signin'}`}
                         data-device={matches ? 'mobile' : 'desktop'}
                     >
                         <FontIcon icon={faShoppingCart} />
@@ -138,7 +138,7 @@ const Header = () => {
                     </ShoppingCartLayout>
 
                     {
-                        logged ? (
+                        user ? (
 
                             <Buttons
                                 text={deftags.member_my_account}

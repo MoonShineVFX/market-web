@@ -118,7 +118,7 @@ const InvoiceForm = ({ items }) => {
 
                         <div className="row">
                             <h4 className="row-title">{deftags.text_account}</h4>
-                            {user.email}
+                            {user?.email}
                         </div>
 
                         <FormRow
