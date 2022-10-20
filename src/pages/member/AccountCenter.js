@@ -1,22 +1,22 @@
-import React, {
+import {
     Fragment,
     useContext,
     useEffect,
     useState,
 } from 'react';
+import { useParams } from 'react-router-dom';
 import { Tabs, Tab, useMediaQuery } from '@mui/material';
 
-import { TitleLayout } from '../../src/components/cart/cartLayout';
-import { TabWrapLayout } from '../../src/components/member/accountLayout';
-import Head from '../../src/containers/Head';
+import { TitleLayout } from '../cart/cartLayout';
+import { TabWrapLayout } from './accountLayout';
+import SEO from '../../containers/SEO';
 
-import MyProduct from '../../src/components/member/MyProduct';
-import OrderRecord from '../../src/components/member/OrderRecord';
-import MyAccount from '../../src/components/member/MyAccount';
+import MyProduct from './MyProduct';
+import OrderRecord from './OrderRecord';
+import MyAccount from './MyAccount';
 
-import { GlobalContext } from '../../src/context/global.state';
-import util from '../../src/utils/util';
-import Service from '../../src/utils/util.service';
+import { GlobalContext } from '../../context/global.state';
+import Service from '../../utils/util.service';
 
 //
 const TabPanel = ({ value, indexKey, children, ...other }) => (
@@ -41,10 +41,13 @@ const EmptyMesg = () => {
 };
 
 //
-const Account = ({ langs, pageData }) => {
+const AccountCenter = () => {
+
+    // Route
+    const { locale } = useParams();
 
     // Context
-    const { globalDispatch } = useContext(GlobalContext);
+    const { deftags, globalDispatch } = useContext(GlobalContext);
 
     // Hook
     const matches = useMediaQuery((theme) => theme.breakpoints.down('mobile'));
@@ -53,26 +56,38 @@ const Account = ({ langs, pageData }) => {
     const [type, setType] = useState('product');
     const [orderRecordList, setOrderRecordList] = useState([]);
     const [profile, setProfile] = useState({});
+    const [isDefer, setIsDefer] = useState(true);
+    const [pageData, setPageData] = useState(null);
 
     useEffect(() => {
 
         globalDispatch({ type: 'sidenav', payload: false });
         globalDispatch({ type: 'target_box', payload: '' });
 
-    }, []);
+        const fetchData = async() => {
+
+            const data = await Service.myProduct(locale);
+            setPageData(data);
+            if (data) setIsDefer(false);
+
+        };
+
+        fetchData();
+
+    }, [globalDispatch, locale]);
 
     // 所有 type
     const types = {
         product: {
-            title: langs.member_my_product,
+            title: deftags.member_my_product,
             component: pageData.list.length ? <MyProduct data={pageData.list} /> : <EmptyMesg />,
         },
         order: {
-            title: langs.order_text_order_record,
+            title: deftags.order_text_order_record,
             component: orderRecordList.length ? <OrderRecord data={orderRecordList} /> : <EmptyMesg />,
         },
         account: {
-            title: langs.member_account_update,
+            title: deftags.member_account_update,
             component: <MyAccount data={profile} />,
         },
     };
@@ -96,14 +111,11 @@ const Account = ({ langs, pageData }) => {
 
     };
 
-    return (
+    return !isDefer && (
 
         <Fragment>
-            <Head
-                title={`${langs.member_account_center}-${types[type].title}`}
-                description={langs.og_description}
-            />
-            <TitleLayout>{langs.member_account_center}</TitleLayout>
+            <SEO title={`${deftags.member_account_center}-${types[type].title}`} />
+            <TitleLayout>{deftags.member_account_center}</TitleLayout>
 
             <TabWrapLayout>
                 <Tabs
@@ -126,7 +138,7 @@ const Account = ({ langs, pageData }) => {
 
                 {
                     // 手機版下載提示
-                    (matches && (type === 'product')) && <p className="download-notice">{langs.member_mobile_download_notice}</p>
+                    (matches && (type === 'product')) && <p className="download-notice">{deftags.member_mobile_download_notice}</p>
                 }
 
                 <div className={`tab-panel panel-${type}`}>
@@ -151,43 +163,4 @@ const Account = ({ langs, pageData }) => {
 
 };
 
-export default Account;
-
-export async function getServerSideProps ({ req, locale }) {
-
-    // 沒有 cookie(token) 導登入頁
-    if (!req.cookies.token) {
-
-        return {
-            redirect: {
-                destination: '/signin',
-                permanent: false,
-            },
-        };
-
-    }
-
-    const resData = await util.serviceServer({
-        url: `/my_products?lang=${locale}`,
-        headers: {
-            Authorization: `Bearer ${req.cookies.token}`,
-        },
-    });
-
-    const { data } = resData;
-
-    if (!data.result) {
-
-        return {
-            notFound: true,
-        };
-
-    }
-
-    return {
-        props: {
-            pageData: data.data,
-        },
-    };
-
-}
+export default AccountCenter;

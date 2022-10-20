@@ -1,9 +1,9 @@
 import { useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
 import { GlobalContext } from '../context/global.state';
-import useLocalStorage from '../utils/useLocalStorage';
+import useLocalStorage from './useLocalStorage';
 
-export default function useDeftags () {
+export default function useDeftags() {
 
     // Router
     const { locale } = useRouter();

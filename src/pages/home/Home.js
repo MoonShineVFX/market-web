@@ -20,7 +20,7 @@ import Banner from './Banner';
 
 import { GlobalContext } from '../../context/global.state';
 import Service from '../../utils/util.service';
-import useGoogleAnalytics from '../../utils/useGoogleAnalytics';
+import useGoogleAnalytics from '../../hooks/useGoogleAnalytics';
 
 const Home = () => {
 

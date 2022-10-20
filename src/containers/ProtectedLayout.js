@@ -1,17 +1,16 @@
-import { useContext } from 'react';
-import { Navigate, Outlet, useParams } from 'react-router-dom';
-import { GlobalContext } from '../context/global.state';
+import {
+    useParams,
+    Navigate,
+    Outlet,
+} from 'react-router-dom';
 
-const ProtectedLayout = () => {
+const ProtectedLayout = ({ logged }) => {
 
     // Route
     const { locale } = useParams();
 
-    // Context
-    const { user } = useContext(GlobalContext);
-
     // 未登入導去登入頁
-    if (!user) {
+    if (!logged) {
 
         return <Navigate to={`/${locale}/signin`} replace />;
 

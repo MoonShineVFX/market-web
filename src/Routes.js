@@ -1,4 +1,4 @@
-import { lazy, Suspense } from 'react';
+import { lazy, Suspense, useEffect } from 'react';
 import {
     createBrowserRouter,
     createRoutesFromElements,
@@ -23,10 +23,13 @@ import ForgotPassword from './pages/guest/ForgotPassword';
 import ResetPassword from './pages/guest/ResetPassword';
 import ActiveAccount from './pages/guest/ActiveAccount';
 
-// import AccountCenter from './pages/member/AccountCenter';
+import AccountCenter from './pages/member/AccountCenter';
 
 // Component
 import Loading from './components/Loading';
+
+// Hook
+import useAuth from './hooks/useAuth';
 
 // Lazy
 const ProductList = lazy(() => import('./pages/product/List'));
@@ -40,6 +43,9 @@ const PageNotFound = () => <p>頁面不存在...</p>;
 
 //
 const PageRoute = () => {
+
+    // Hook
+    const logged = useAuth();
 
     // Router
     let router = createBrowserRouter(
@@ -68,7 +74,7 @@ const PageRoute = () => {
                     />
                 </Route>
 
-                <Route element={<GuestLayout />}>
+                <Route element={<GuestLayout logged={logged} />}>
                     <Route path="signin" element={<Signin />} />
                     <Route path="register" element={<Register />} />
                     <Route path="forgot_password" element={<ForgotPassword />} />
@@ -76,10 +82,9 @@ const PageRoute = () => {
                     <Route path="active_account" element={<ActiveAccount />} />
                 </Route>
 
-                <Route element={<ProtectedLayout />}>
+                <Route element={<ProtectedLayout logged={logged} />}>
                     <Route path="member" element={<>/member</>}>
-                        <Route path="account" element={<>account</>} />
-                        {/* <Route path="account" element={<AccountCenter />} /> */}
+                        <Route path="account" element={<AccountCenter />} />
                     </Route>
                 </Route>
 

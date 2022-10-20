@@ -1,7 +1,7 @@
 import { Grid } from '@mui/material';
 import { styled } from '@mui/system';
 import { BoxWrapLayout } from '../member/accountLayout';
-import Links from '../Links';
+import Links from '../../components/Links';
 
 // Web 訂單紀錄
 const OrderRecordLayout = styled('div')(({ theme }) => ({

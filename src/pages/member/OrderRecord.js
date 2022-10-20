@@ -1,7 +1,7 @@
 import { useContext } from 'react';
 import { useMediaQuery, Grid } from '@mui/material';
 import { OrderRecordLayout, OrderRecordGridLayout } from '../order/orderLayout';
-import Links from '../Links';
+import Links from '../../components/Links';
 import { GlobalContext } from '../../context/global.state';
 import util from '../../utils/util';
 

@@ -2,6 +2,12 @@
 const globalReducer = (state, { type, payload }) => {
 
     switch (type) {
+        case 'global_data':
+            return {
+                ...state,
+                user: payload.other,
+            };
+
         case 'lang_config':
             return {
                 ...state,
@@ -24,19 +30,6 @@ const globalReducer = (state, { type, payload }) => {
             return {
                 ...state,
                 sideNav: payload,
-            };
-
-        case 'global_data':
-            return {
-                ...state,
-                tags: payload.tags,
-                user: payload.other,
-            };
-
-        case 'lang_list':
-            return {
-                ...state,
-                deftags: payload,
             };
 
         case 'cart_list':

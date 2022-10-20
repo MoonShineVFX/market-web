@@ -1,7 +1,7 @@
 import { useState, useContext } from 'react';
 import { useMediaQuery, Grid } from '@mui/material';
 import { ItemLayout } from './accountLayout';
-import Links, { ButtonLink } from '../Links';
+import Links, { ButtonLink } from '../../components/Links';
 import { GlobalContext } from '../../context/global.state';
 import util from '../../utils/util';
 import Service from '../../utils/util.service';

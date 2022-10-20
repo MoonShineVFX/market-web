@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useLocation } from 'react-router-dom';
 import ReactGA from 'react-ga';
 
-export default function useGoogleAnalytics () {
+export default function useGoogleAnalytics() {
 
     // Router
     const location = useLocation();

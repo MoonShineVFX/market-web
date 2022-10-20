@@ -80,11 +80,7 @@ const Signin = () => {
             reqData: { recaptcha: token },
             headers: { Authorization: `Basic ${auth}`},
         })
-        .then(() => {
-
-            navigate(`/${locale}`);
-
-        });
+        .finally(() => navigate(0));
 
     };
 

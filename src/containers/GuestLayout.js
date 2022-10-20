@@ -1,17 +1,16 @@
-import { useContext } from 'react';
-import { Navigate, Outlet, useParams } from 'react-router-dom';
-import { GlobalContext } from '../context/global.state';
+import {
+    useParams,
+    Navigate,
+    Outlet,
+} from 'react-router-dom';
 
-const GuestLayout = () => {
-
-    // Context
-    const { user } = useContext(GlobalContext);
+const GuestLayout = ({ logged }) => {
 
     // Route
     const { locale } = useParams();
 
     // 已登入導去首頁
-    if (user) {
+    if (logged) {
 
         return <Navigate to={`/${locale}`} replace />;
 

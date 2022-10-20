@@ -50,6 +50,7 @@ const Service = {
     orderRecord: (reqData) => util.serviceProxy('/orders', reqData),
 
     // 帳戶資訊
+    myProduct: (reqData) => util.serviceProxy(`/my_products?lang=${reqData}`),
     myAccount: (reqData) => util.serviceProxy('/my_account', reqData),
     updateMyAccount: (reqData) => util.serviceProxy('/account_update', reqData),
     changePassword: (reqData) => util.serviceProxy('/change_password', reqData),

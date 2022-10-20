@@ -2,7 +2,7 @@ import { useContext, useState, useCallback } from 'react';
 import { useGoogleReCaptcha } from 'react-google-recaptcha-v3';
 import { GlobalContext } from '../context/global.state';
 
-export default function useReCaptchaVerify () {
+export default function useReCaptchaVerify() {
 
     // Context
     const { dynamicAction, globalDispatch } = useContext(GlobalContext);

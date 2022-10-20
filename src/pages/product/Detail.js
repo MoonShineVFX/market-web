@@ -24,8 +24,8 @@ import ImageEnlarge from '../../components/ImageEnlarge';
 import { GlobalContext } from '../../context/global.state';
 import util from '../../utils/util';
 import Service from '../../utils/util.service';
-import useLocalStorage from '../../utils/useLocalStorage';
-import useGoogleAnalytics from '../../utils/useGoogleAnalytics';
+import useLocalStorage from '../../hooks/useLocalStorage';
+import useGoogleAnalytics from '../../hooks/useGoogleAnalytics';
 
 const {
     priceWithCommas,

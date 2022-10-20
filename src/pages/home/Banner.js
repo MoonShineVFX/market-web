@@ -9,7 +9,7 @@ import {
 } from './homeLayout';
 import Links from '../../components/Links';
 import { GlobalContext } from '../../context/global.state';
-import useGoogleAnalytics from '../../utils/useGoogleAnalytics';
+import useGoogleAnalytics from '../../hooks/useGoogleAnalytics';
 
 const Banner = ({ pageData }) => {
 
