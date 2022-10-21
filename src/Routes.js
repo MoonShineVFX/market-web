@@ -109,7 +109,34 @@ const PageRoute = () => {
     return (
 
         <BrowserRouter>
-            <Routes basename="/:locale">
+            <Routes>
+                <Route path="/" element={<PublicLayout emptyLangs={!deftags} />}>
+                    <Route index element={<Home />} />
+                    <Route path="about" element={<About />} />
+                    <Route path="product">
+                        <Route
+                            path="list"
+                            element={
+                                <Suspense fallback={<Fallback />}>
+                                    <ProductList />
+                                </Suspense>
+                            }
+                        />
+                        <Route
+                            path=":id"
+                            element={
+                                <Suspense fallback={<Fallback />}>
+                                    <ProductDetail />
+                                </Suspense>
+                            }
+                        />
+                        <Route path="*" element={<PageNotFound />} />
+                    </Route>
+                    <Route path="*" element={<Navigate to="/" replace />} />
+                </Route>
+            </Routes>
+
+            {/* <Routes basename="/:locale">
                 <Route element={<PublicLayout emptyLangs={!deftags} />}>
                     <Route path="*" element={<PageNotFound />} />
                     <Route path="/" element={<Navigate to={'/zh'} replace />} />
@@ -153,7 +180,7 @@ const PageRoute = () => {
                         </Route>
                     </Route>
                 </Route>
-            </Routes>
+            </Routes> */}
         </BrowserRouter>
 
     );

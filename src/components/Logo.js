@@ -30,7 +30,7 @@ const Logo = ({ ...rest }) => {
 
         <LogoLayout {...rest}>
             <Links
-                url={`/${locale}`}
+                url={`/`}
                 className="logo-text"
                 title={deftags.text_logo}
             >

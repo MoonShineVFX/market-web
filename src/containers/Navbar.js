@@ -32,7 +32,8 @@ const Navbar = ({ ...rest }) => {
             {
                 navMenus.map(({ key, text }) => (
 
-                    <NavLink key={key} to={`/${locale}/${key}`}>
+                    <NavLink key={key} to={`${key}`}>
+                    {/* <NavLink key={key} to={`/${locale}/${key}`}> */}
                         {text}
                     </NavLink>
 
