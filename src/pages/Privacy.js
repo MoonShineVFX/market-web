@@ -42,10 +42,7 @@ const Privacy = () => {
     return !isDefer && (
 
         <Fragment>
-            <SEO
-                title={deftags.privacy_title}
-                description={deftags.og_description}
-            />
+            <SEO title={deftags.privacy_title} />
             <TitleLayout>{deftags.privacy_title}</TitleLayout>
 
             <SectionLayout>

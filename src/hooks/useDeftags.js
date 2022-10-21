@@ -1,29 +1,38 @@
 import { useContext, useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
+import { useParams } from 'react-router-dom';
 import { GlobalContext } from '../context/global.state';
-import useLocalStorage from './useLocalStorage';
+import utilConst from '../utils/util.const';
+import Service from '../utils/util.service';
+
+const { locales } = utilConst;
+const [defLocale] = locales;
 
 export default function useDeftags() {
 
-    // Router
-    const { locale } = useRouter();
+    // Hook
+    const { locale } = useParams();
 
     // Context
-    const { deftags } = useContext(GlobalContext);
-
-    // Hook
-    const [deftag] = useLocalStorage('langList');
+    const { globalDispatch } = useContext(GlobalContext);
 
     // State
-    const [langs, setLangs] = useState();
+    const [deftags, setDeftags] = useState(null);
 
     useEffect(() => {
 
-        setLangs((deftag !== 'undefined') ? deftags?.[locale] : deftag?.[locale]);
+        const fetchData = async() => {
 
-    }, [deftag, deftags, locale])
+            // 取得語系包
+            const langs = await Service.langs();
+            setDeftags(langs);
+            globalDispatch({ type: 'lang_config', payload: langs[locale ?? defLocale] });
 
+        };
 
-    return [langs, setLangs];
+        fetchData();
+
+    }, [globalDispatch, locale]);
+
+    return deftags;
 
 }

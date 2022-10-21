@@ -1,6 +1,6 @@
 import { useContext, useState, useEffect } from 'react';
-import Service from '../utils/util.service';
 import { GlobalContext } from '../context/global.state';
+import Service from '../utils/util.service';
 
 export default function useAuth() {
 

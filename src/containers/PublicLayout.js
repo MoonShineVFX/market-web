@@ -1,37 +1,27 @@
-import { useContext, useEffect, useState } from 'react';
-import { Outlet, useParams } from 'react-router-dom';
+import {
+    useParams,
+    Navigate,
+    Outlet,
+} from 'react-router-dom';
 import Frame from './Frame';
-import { GlobalContext } from '../context/global.state';
-import Service from '../utils/util.service';
+import utilConst from '../utils/util.const';
 
-const PublicLayout = () => {
+const { locales } = utilConst;
+const [defLocale] = locales;
+
+const PublicLayout = ({ emptyLangs }) => {
 
     // Route
     const { locale } = useParams();
 
-    // Context
-    const { globalDispatch } = useContext(GlobalContext);
+    // 預設語系為中文，並轉址到 /zh
+    // if (!locale) {
 
-    // State
-    const [isDefer, setIsDefer] = useState(true);
+    //     return <Navigate to={`/${defLocale}`} replace />;
 
-    useEffect(() => {
+    // }
 
-        const fetchData = async() => {
-
-            // 取得語系包
-            const langs = await Service.langs();
-            globalDispatch({ type: 'lang_config', payload: langs[locale] });
-
-            if (langs) setIsDefer(false);
-
-        };
-
-        fetchData();
-
-    }, [globalDispatch, locale]);
-
-    return !isDefer && (
+    return !emptyLangs && (
 
         <Frame>
             <Outlet />

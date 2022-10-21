@@ -4,7 +4,7 @@ import {
     useEffect,
     useState,
 } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, Outlet } from 'react-router-dom';
 import { Tabs, Tab, useMediaQuery } from '@mui/material';
 
 import { TitleLayout } from '../cart/cartLayout';
@@ -41,7 +41,7 @@ const EmptyMesg = () => {
 };
 
 //
-const AccountCenter = () => {
+const AccountBase = () => {
 
     // Route
     const { locale } = useParams();
@@ -60,9 +60,6 @@ const AccountCenter = () => {
     const [types, setTypes] = useState(null);
 
     useEffect(() => {
-
-        globalDispatch({ type: 'sidenav', payload: false });
-        globalDispatch({ type: 'target_box', payload: '' });
 
         const fetchData = async() => {
 
@@ -161,4 +158,4 @@ const AccountCenter = () => {
 
 };
 
-export default AccountCenter;
+export default AccountBase;

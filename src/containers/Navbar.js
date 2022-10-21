@@ -1,9 +1,11 @@
 import { useContext } from 'react';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useParams } from 'react-router-dom';
 import { NavMenuLayout } from './globalLayout';
 import { GlobalContext } from '../context/global.state';
 
 const Navbar = ({ ...rest }) => {
+
+    const { locale } = useParams();
 
     // Context
     const { deftags } = useContext(GlobalContext);
@@ -30,7 +32,7 @@ const Navbar = ({ ...rest }) => {
             {
                 navMenus.map(({ key, text }) => (
 
-                    <NavLink key={key} to={key}>
+                    <NavLink key={key} to={`/${locale}/${key}`}>
                         {text}
                     </NavLink>
 
