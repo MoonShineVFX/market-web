@@ -64,7 +64,7 @@ const AccountCenter = () => {
         globalDispatch({ type: 'sidenav', payload: false });
         globalDispatch({ type: 'target_box', payload: '' });
 
-        const fetchData = async() => {
+        const fetchData = async () => {
 
             const data = await Service.myProduct(locale);
             setTypes({

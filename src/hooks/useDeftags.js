@@ -9,7 +9,7 @@ const [defLocale] = locales;
 
 export default function useDeftags() {
 
-    // Hook
+    // Route
     const { locale } = useParams();
 
     // Context
@@ -20,7 +20,7 @@ export default function useDeftags() {
 
     useEffect(() => {
 
-        const fetchData = async() => {
+        const fetchData = async () => {
 
             // 取得語系包
             const langs = await Service.langs();

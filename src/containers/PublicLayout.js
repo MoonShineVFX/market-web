@@ -1,27 +1,13 @@
-import {
-    useParams,
-    Navigate,
-    Outlet,
-} from 'react-router-dom';
+import { Outlet } from 'react-router-dom';
 import Frame from './Frame';
-import utilConst from '../utils/util.const';
+import useDeftags from '../hooks/useDeftags';
 
-const { locales } = utilConst;
-const [defLocale] = locales;
+const PublicLayout = () => {
 
-const PublicLayout = ({ emptyLangs }) => {
+    // Hook
+    const deftags = useDeftags(); // 語系要在此拿，外層抓不到 locale
 
-    // Route
-    const { locale } = useParams();
-
-    // 預設語系為中文，並轉址到 /zh
-    // if (!locale) {
-
-    //     return <Navigate to={`/${defLocale}`} replace />;
-
-    // }
-
-    return !emptyLangs && (
+    return !!deftags && (
 
         <Frame>
             <Outlet />

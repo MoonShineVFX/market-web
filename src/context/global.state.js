@@ -1,5 +1,4 @@
 import { createContext, useReducer } from 'react';
-
 import {
     globalReducer,
     formStorageReducer,
@@ -10,14 +9,12 @@ import {
 const globalInitState = {
     deftags: null,
     user: null,
-    tags: [],
     slideshowActive: 0,
     logged: false,
     targetBox: '',
     targetPopup: null,
     sideNav: false,
     snackbar: false,
-    cart: {},
     dynamicAction: '',
     isVerified: false,
 };
@@ -45,14 +42,12 @@ const GlobalProvider = ({ children }) => {
     const {
         deftags,
         user,
-        tags,
         slideshowActive,
         logged,
         targetBox,
         targetPopup,
         sideNav,
         snackbar,
-        cart,
         dynamicAction,
         isVerified,
     } = globalState;
@@ -66,14 +61,12 @@ const GlobalProvider = ({ children }) => {
             // 全域資料
             deftags,
             user,
-            tags,
             slideshowActive,
             logged,
             targetBox,
             targetPopup,
             sideNav,
             snackbar,
-            cart,
             dynamicAction,
             isVerified,
 

@@ -1,9 +1,11 @@
 import { useContext } from 'react';
+import { useParams } from 'react-router-dom';
 import { styled } from '@mui/system';
-import Box from '../Box';
-import Links from '../Links';
+import Box from '../../components/Box';
+import Links from '../../components/Links';
 import { GlobalContext } from '../../context/global.state';
 import util from '../../utils/util';
+import useCart from '../../hooks/useCart';
 
 const { priceWithCommas } = util;
 
@@ -59,15 +61,25 @@ const ItemWrapLayout = styled(Links)(({ theme }) => ({
 }));
 
 //
-const Cart = () => {
+const CartBox = () => {
+
+    // Route
+    const { locale } = useParams();
 
     // Context
-    const { deftags, logged, cart, globalDispatch } = useContext(GlobalContext);
+    const {
+        user,
+        deftags,
+        globalDispatch,
+    } = useContext(GlobalContext);
+
+    // Hook
+    const { cart } = useCart(false);
 
     // 當頁再次點擊要關閉 box
     const handleResetBox = () => globalDispatch({ type: 'target_box', payload: '' });
 
-    return (
+    return cart && (
 
         <CartLayout>
             <h4 className="title">{deftags.cart_box_title}</h4>
@@ -79,7 +91,7 @@ const Cart = () => {
 
                             <ItemWrapLayout
                                 key={id}
-                                url={`/product/${id}`}
+                                url={`/${locale}/product/${id}`}
                                 newPage
                             >
                                 <div className="thumb">
@@ -103,7 +115,7 @@ const Cart = () => {
             </div>
             <div className="goToOrder">
                 <Links
-                    url={`/${logged ? 'cart' : 'signin'}`}
+                    url={`/${locale}/${user ? 'cart' : 'signin'}`}
                     title={deftags.cart_go_to_checkout}
                     onClick={handleResetBox}
                 >
@@ -116,4 +128,4 @@ const Cart = () => {
 
 };
 
-export default Cart;
+export default CartBox;

@@ -31,10 +31,7 @@ const MyAccountBox = () => {
     const { locale } = useParams();
 
     // Context
-    const { globalDispatch } = useContext(GlobalContext);
-
-    // Hook
-    const { deftags } = useContext(GlobalContext);
+    const { deftags, globalDispatch } = useContext(GlobalContext);
 
     // Menu
     const menus = {

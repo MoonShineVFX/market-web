@@ -88,7 +88,7 @@ const ProductDetail = () => {
         globalDispatch({ type: 'sidenav', payload: false });
         globalDispatch({ type: 'target_box', payload: '' });
 
-        const fetchData = async() => {
+        const fetchData = async () => {
 
             const data = await Service.productDetail({
                 id: params.id,
@@ -102,7 +102,7 @@ const ProductDetail = () => {
 
         fetchData();
 
-    }, [visible, currEvent, globalDispatch, params]);
+    }, [visible, currEvent, globalDispatch, params.locale, params.id]);
 
     // 點圖放大
     const handleClickImgEnlarge = (url, id) => {

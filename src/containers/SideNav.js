@@ -56,7 +56,7 @@ const Sidenav = () => {
                     className="shopping-cart"
                 >
                     <FontIcon icon={faShoppingCart} />
-                    <span className="count">({cart.count})</span>
+                    {/* <span className="count">({cart.count})</span> */}
                 </Links>
 
                 <Links url={logged ? '/member/account' : '/signin'}>

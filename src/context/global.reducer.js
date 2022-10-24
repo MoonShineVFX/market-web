@@ -32,12 +32,6 @@ const globalReducer = (state, { type, payload }) => {
                 sideNav: payload,
             };
 
-        case 'cart_list':
-            return {
-                ...state,
-                cart: payload,
-            };
-
         case 'add_cart':
             return {
                 ...state,
@@ -74,12 +68,6 @@ const globalReducer = (state, { type, payload }) => {
             return {
                 ...state,
                 snackbar: payload,
-            };
-
-        case 'recaptcha_action':
-            return {
-                ...state,
-                dynamicAction: payload,
             };
 
         case 'recaptcha_is_verified':

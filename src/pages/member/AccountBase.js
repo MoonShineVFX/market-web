@@ -61,7 +61,7 @@ const AccountBase = () => {
 
     useEffect(() => {
 
-        const fetchData = async() => {
+        const fetchData = async () => {
 
             const data = await Service.myProduct(locale);
             setTypes({

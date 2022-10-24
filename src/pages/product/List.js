@@ -38,7 +38,7 @@ const ProductList = () => {
         globalDispatch({ type: 'sidenav', payload: false });
         globalDispatch({ type: 'target_box', payload: '' });
 
-        const fetchData = async() => {
+        const fetchData = async () => {
 
             const data = await Service.productList({
                 page: searchParams.get('page'),
@@ -100,7 +100,7 @@ const ProductList = () => {
                                         >
                                             <Item
                                                 type="product"
-                                                url={`/product/${id}`}
+                                                url={`/${params.locale}/product/${id}`}
                                                 width="321"
                                                 height="186"
                                                 data={{ title, price, imgUrl }}

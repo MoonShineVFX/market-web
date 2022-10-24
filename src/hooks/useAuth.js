@@ -12,7 +12,7 @@ export default function useAuth() {
 
     useEffect(() => {
 
-        const fetchData = async() => {
+        const fetchData = async () => {
 
             // 取得使用者資訊
             const data = await Service.common();

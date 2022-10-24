@@ -7,6 +7,13 @@ export default function useGoogleAnalytics() {
     // Router
     const location = useLocation();
 
+    useEffect(() => {
+
+        init();
+        sendPageview(location.pathname);
+
+    }, [location]);
+
     // init
     const init = () => {
 
@@ -32,13 +39,6 @@ export default function useGoogleAnalytics() {
         });
 
     };
-
-    useEffect(() => {
-
-        init();
-        sendPageview(location.pathname);
-
-    }, [location]);
 
     return eventTracker;
 

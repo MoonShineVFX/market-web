@@ -3,8 +3,6 @@ import {
     createBrowserRouter,
     createRoutesFromElements,
     RouterProvider,
-    BrowserRouter,
-    Routes,
     Route,
     Navigate,
 } from 'react-router-dom';
@@ -29,21 +27,24 @@ import ActiveAccount from './pages/guest/ActiveAccount';
 import AccountBase from './pages/member/AccountBase';
 import AccountCenter from './pages/member/AccountCenter';
 
+import Cart from './pages/cart/Cart';
+import CartBox from './pages/cart/CartBox';
+
 // Component
 import Loading from './components/Loading';
 
 // Hook
 import useAuth from './hooks/useAuth';
-import useDeftags from './hooks/useDeftags';
 
 // Util
-import util from './utils/util';
+import utilConst from './utils/util.const';
 
 // Lazy
 const ProductList = lazy(() => import('./pages/product/List'));
 const ProductDetail = lazy(() => import('./pages/product/Detail'));
 
-const { loader } = util;
+const { locales } = utilConst;
+const [defLocale] = locales;
 
 //
 const Fallback = () => <Loading />;
@@ -56,63 +57,17 @@ const PageRoute = () => {
 
     // Hook
     const logged = useAuth();
-    const deftags = useDeftags();
 
     // Router
-    // let router = createBrowserRouter(
-    //     createRoutesFromElements(
-    //         <Route path=":locale" element={<PublicLayout emptyLangs={!deftags} />}>
-    //             <Route index element={<Home />} />
-    //             <Route path="about" element={<About />} />
-    //             <Route path="tutorial" element={<Tutorial />} />
-    //             <Route path="privacy" element={<Privacy />} />
-    //             <Route path="product">
-    //                 <Route
-    //                     path="list"
-    //                     element={
-    //                         <Suspense fallback={<Fallback />}>
-    //                             <ProductList />
-    //                         </Suspense>
-    //                     }
-    //                 />
-    //                 <Route
-    //                     path=":id"
-    //                     element={
-    //                         <Suspense fallback={<Fallback />}>
-    //                             <ProductDetail />
-    //                         </Suspense>
-    //                     }
-    //                 />
-    //             </Route>
-
-    //             <Route element={<GuestLayout logged={logged} />}>
-    //                 <Route path="signin" element={<Signin />} />
-    //                 <Route path="register" element={<Register />} />
-    //                 <Route path="forgot_password" element={<ForgotPassword />} />
-    //                 <Route path="reset_password" element={<ResetPassword />} />
-    //                 <Route path="active_account" element={<ActiveAccount />} />
-    //             </Route>
-
-    //             <Route element={<ProtectedLayout logged={logged} />}>
-    //                 <Route path="member" element={<AccountBase />}>
-    //                     <Route path="account" element={<>account</>} />
-    //                 </Route>
-    //             </Route>
-
-    //             <Route path="*" element={<PageNotFound />}></Route>
-    //         </Route>
-    //     )
-    // );
-
-    // return <RouterProvider router={router} fallbackElement={<Fallback />} />;
-
-    return (
-
-        <BrowserRouter>
-            <Routes>
-                <Route path="/" element={<PublicLayout emptyLangs={!deftags} />}>
+    let router = createBrowserRouter(
+        createRoutesFromElements(
+            <Route element={<PublicLayout />}>
+                <Route path="/" element={<Navigate to={`/${defLocale}`} replace />} />
+                <Route path=":locale">
                     <Route index element={<Home />} />
                     <Route path="about" element={<About />} />
+                    <Route path="tutorial" element={<Tutorial />} />
+                    <Route path="privacy" element={<Privacy />} />
                     <Route path="product">
                         <Route
                             path="list"
@@ -130,60 +85,30 @@ const PageRoute = () => {
                                 </Suspense>
                             }
                         />
-                        <Route path="*" element={<PageNotFound />} />
                     </Route>
-                    <Route path="*" element={<Navigate to="/" replace />} />
-                </Route>
-            </Routes>
 
-            {/* <Routes basename="/:locale">
-                <Route element={<PublicLayout emptyLangs={!deftags} />}>
-                    <Route path="*" element={<PageNotFound />} />
-                    <Route path="/" element={<Navigate to={'/zh'} replace />} />
+                    <Route element={<GuestLayout logged={logged} />}>
+                        <Route path="signin" element={<Signin />} />
+                        <Route path="register" element={<Register />} />
+                        <Route path="forgot_password" element={<ForgotPassword />} />
+                        <Route path="reset_password" element={<ResetPassword />} />
+                        <Route path="active_account" element={<ActiveAccount />} />
+                    </Route>
 
-                    <Route path=":locale" >
-                        <Route index element={<Home />} />
-                        <Route path="about" element={<About />} />
-                        <Route path="tutorial" element={<Tutorial />} />
-                        <Route path="privacy" element={<Privacy />} />
-                        <Route path="product">
-                            <Route
-                                path="list"
-                                element={
-                                    <Suspense fallback={<Fallback />}>
-                                        <ProductList />
-                                    </Suspense>
-                                }
-                            />
-                            <Route
-                                path=":id"
-                                element={
-                                    <Suspense fallback={<Fallback />}>
-                                        <ProductDetail />
-                                    </Suspense>
-                                }
-                            />
-                        </Route>
-
-                        <Route element={<GuestLayout logged={logged} />}>
-                            <Route path="signin" element={<Signin />} />
-                            <Route path="register" element={<Register />} />
-                            <Route path="forgot_password" element={<ForgotPassword />} />
-                            <Route path="reset_password" element={<ResetPassword />} />
-                            <Route path="active_account" element={<ActiveAccount />} />
-                        </Route>
-
-                        <Route element={<ProtectedLayout logged={logged} />}>
-                            <Route path="member" element={<AccountBase />}>
-                                <Route path="account" element={<>account</>} />
-                            </Route>
+                    <Route element={<ProtectedLayout logged={logged} />}>
+                        <Route path="cart" element={<Cart />} />
+                        <Route path="member" element={<AccountBase />}>
+                            <Route path="account" element={<>account</>} />
                         </Route>
                     </Route>
-                </Route>
-            </Routes> */}
-        </BrowserRouter>
 
+                    <Route path="*" element={<PageNotFound />}></Route>
+                </Route>
+            </Route>
+        )
     );
+
+    return <RouterProvider router={router} fallbackElement={<Fallback />} />;
 
 };
 
