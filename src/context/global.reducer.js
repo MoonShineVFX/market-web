@@ -42,6 +42,12 @@ const globalReducer = (state, { type, payload }) => {
                 },
             };
 
+        case 'cart_list':
+            return {
+                ...state,
+                cart: payload,
+            };
+
         case 'remove_cart':
             delete state.cart.items[payload];
             return {

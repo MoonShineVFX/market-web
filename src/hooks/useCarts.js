@@ -1,4 +1,9 @@
-import { useContext, useState, useEffect } from 'react';
+import {
+    useContext,
+    useState,
+    useEffect,
+} from 'react';
+import { useParams } from 'react-router-dom';
 import { GlobalContext } from '../context/global.state';
 import Service from '../utils/util.service';
 import useLocalStorage from './useLocalStorage';
@@ -14,30 +19,48 @@ const arrangeCartList = (array) => array.reduce((acc, obj) => {
 
 }, {});
 
-export default function useCart(reFetch = true) {
+export default function useCartss(resData = null) {
+
+    // Route
+    const { locale } = useParams();
 
     // Hook
     const [cartItem, setCartItem] = useLocalStorage('cartItem');
 
     // Context
-    const { user, globalDispatch } = useContext(GlobalContext);
+    const { user } = useContext(GlobalContext);
 
     // State
-    const [cartList, setCartList] = useState(null);
-    const [cart, setCart] = useState(null);
-    const [amount, setAmount] = useState(null);
+    const [carts, setCarts] = useState(resData);
+    const [cartList, setCartList] = useState(resData);
 
     useEffect(() => {
 
+        // console.log('init')
+
+        const init = () => {
+
+            setCarts({
+                count: Object.entries(cartItem || {}).length,
+                items: cartItem ?? {},
+            });
+
+        };
+
         init();
+
+    }, [cartItem]);
+
+    useEffect(() => {
+
+        // console.log('fetchData')
 
         const fetchData = async () => {
 
-            const data = await Service.cartList()
+            const data = await Service.cartList(locale);
             setCartItem(arrangeCartList(data.list));
-            setAmount(data.amount);
-            setCartList(data.list);
-            setCart({
+            setCartList(data);
+            setCarts({
                 count: data.list.length,
                 items: arrangeCartList(data.list),
             });
@@ -45,25 +68,10 @@ export default function useCart(reFetch = true) {
         };
 
         // 有登入並更新當前登入者的購物車
-        if (user && reFetch) fetchData();
+        if (user) fetchData();
 
-    }, [globalDispatch, user, reFetch]);
+    }, [locale, user]);
 
-    const init = () => {
-
-        setCart({
-            count: Object.entries(cartItem || {}).length,
-            items: cartItem ?? {},
-        });
-
-    };
-
-    return {
-        cart,
-        amount,
-        cartList,
-        setAmount,
-        setCartList,
-    };
+    return { cartList, setCartList };
 
 }

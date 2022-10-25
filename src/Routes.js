@@ -28,7 +28,6 @@ import AccountBase from './pages/member/AccountBase';
 import AccountCenter from './pages/member/AccountCenter';
 
 import Cart from './pages/cart/Cart';
-import CartBox from './pages/cart/CartBox';
 
 // Component
 import Loading from './components/Loading';

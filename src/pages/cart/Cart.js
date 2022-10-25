@@ -4,6 +4,7 @@ import {
     useEffect,
     useState,
 } from 'react';
+import { useParams } from 'react-router-dom';
 import { Grid, useMediaQuery } from '@mui/material';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
@@ -23,7 +24,7 @@ import util from '../../utils/util';
 import Service from '../../utils/util.service';
 import useLocalStorage from '../../hooks/useLocalStorage';
 import useGoogleAnalytics from '../../hooks/useGoogleAnalytics';
-import useCart from '../../hooks/useCart';
+import useCarts from '../../hooks/useCarts';
 
 const { priceWithCommas } = util;
 
@@ -116,9 +117,11 @@ const Item = ({
     );
 
 };
-
 //
 const Cart = () => {
+
+    // Route
+    const { locale } = useParams();
 
     // Context
     const { deftags, globalDispatch } = useContext(GlobalContext);
@@ -126,17 +129,11 @@ const Cart = () => {
     // Hook
     const matches = useMediaQuery((theme) => theme.breakpoints.down('sm'));
     const eventTracker = useGoogleAnalytics();
-    const {
-        amount,
-        cartList,
-        setAmount,
-        setCartList,
-    } = useCart(false);
+    const [cartItem, setCartItem] = useLocalStorage('cartItem');
+    const { cartList, setCartList } = useCarts();
 
     // State
-    const [cartItem, setCartItem] = useLocalStorage('cartItem');
-    // const [list, setList] = useState(pageData.list);
-    // const [amount, setAmount] = useState(pageData.amount);
+    const [isDefer, setIsDefer] = useState(true);
     const [invoiceVisible, setInvoiceVisible] = useState(false);
 
     useEffect(() => {
@@ -144,7 +141,11 @@ const Cart = () => {
         globalDispatch({ type: 'sidenav', payload: false });
         globalDispatch({ type: 'target_box', payload: '' });
 
-    }, [globalDispatch]);
+        if (cartList) setIsDefer(false);
+
+        // console.log('cartList:', cartList)
+
+    }, [globalDispatch, cartList]);
 
     // 刪除商品
     const handleRemoveItem = (e, { id, productId, title }) => {
@@ -160,16 +161,17 @@ const Cart = () => {
         delete obj[productId];
 
         e.preventDefault();
-        Service.cartRemove({ cartId: id })
-            .then(({ list, amount }) => {
 
-                setCartList(list);
-                setAmount(amount);
+        // return;
+        Service.cartRemove({ cartId: id })
+            .then((resData) => {
+
+                setCartList(resData);
                 setCartItem(obj); // 更新 localStorage
-                globalDispatch({
-                    type: 'remove_cart',
-                    payload: productId,
-                });
+                // globalDispatch({
+                //     type: 'remove_cart',
+                //     payload: productId,
+                // });
 
             });
 
@@ -178,9 +180,7 @@ const Cart = () => {
     // 下一步
     const handleNextStep = () => setInvoiceVisible(true);
 
-    console.log('Cart cartList:', cartList)
-
-    return cartList && (
+    return !isDefer && (
 
         <Fragment>
             <SEO title={deftags.cart_order_title} />
@@ -191,12 +191,12 @@ const Cart = () => {
 
                 <CartLayout>
                     {
-                        cartList.length ? (
+                        cartList.list.length ? (
 
                             <Fragment>
                                 <div className="items">
                                     {
-                                        cartList.map((data) => (
+                                        cartList.list.map((data) => (
 
                                             <Item
                                                 key={data.id}
@@ -213,8 +213,8 @@ const Cart = () => {
                                         matches ? (
 
                                             <div>
-                                                <span>總額</span>
-                                                <span className="price">{priceWithCommas(amount)}</span>
+                                                <span>{deftags.order_text_total_price}</span>
+                                                <span className="price">{priceWithCommas(cartList.amount)}</span>
                                             </div>
 
                                         ) : (
@@ -222,8 +222,8 @@ const Cart = () => {
                                             <TableGrid
                                                 colRight={(
                                                     <div>
-                                                        <span>總額</span>
-                                                        <div className="price">{priceWithCommas(amount)}</div>
+                                                        <span>{deftags.order_text_total_price}</span>
+                                                        <div className="price">{priceWithCommas(cartList.amount)}</div>
                                                     </div>
                                                 )}
                                             />
@@ -246,7 +246,7 @@ const Cart = () => {
                 </div>
 
                 {
-                    invoiceVisible && <InvoiceForm items={cartList} />
+                    invoiceVisible && <InvoiceForm items={cartList.list} />
                 }
             </SectionLayout>
         </Fragment>

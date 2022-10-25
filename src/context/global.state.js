@@ -15,6 +15,7 @@ const globalInitState = {
     targetPopup: null,
     sideNav: false,
     snackbar: false,
+    cart: null,
     dynamicAction: '',
     isVerified: false,
 };
@@ -48,6 +49,7 @@ const GlobalProvider = ({ children }) => {
         targetPopup,
         sideNav,
         snackbar,
+        cart,
         dynamicAction,
         isVerified,
     } = globalState;
@@ -67,6 +69,7 @@ const GlobalProvider = ({ children }) => {
             targetPopup,
             sideNav,
             snackbar,
+            cart,
             dynamicAction,
             isVerified,
 

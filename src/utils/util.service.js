@@ -39,7 +39,7 @@ const Service = {
     signWithGoogle: (reqData) => util.serviceProxy('/google_login', reqData),
 
     // 購物車
-    cartList: (reqData) => util.serviceProxy('/cart_products', reqData),
+    cartList: (reqData) => util.serviceProxy(`/cart_products?lang=${reqData}`),
     cartAdd: (reqData) => util.serviceProxy('/cart_product_add', reqData),
     cartRemove: (reqData) => util.serviceProxy('/cart_product_remove', reqData),
 
