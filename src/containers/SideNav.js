@@ -20,8 +20,8 @@ const Sidenav = () => {
     const {
         deftags,
         logged,
+        cartCount,
         sideNav,
-        cart,
         globalDispatch,
     } = useContext(GlobalContext);
 
@@ -56,7 +56,7 @@ const Sidenav = () => {
                     className="shopping-cart"
                 >
                     <FontIcon icon={faShoppingCart} />
-                    {/* <span className="count">({cart.count})</span> */}
+                    <span className="count">({cartCount})</span>
                 </Links>
 
                 <Links url={logged ? '/member/account' : '/signin'}>

@@ -4,7 +4,6 @@ import {
     useEffect,
     useState,
 } from 'react';
-import { useParams } from 'react-router-dom';
 import { Grid, useMediaQuery } from '@mui/material';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
@@ -120,9 +119,6 @@ const Item = ({
 //
 const Cart = () => {
 
-    // Route
-    const { locale } = useParams();
-
     // Context
     const { deftags, globalDispatch } = useContext(GlobalContext);
 
@@ -143,8 +139,6 @@ const Cart = () => {
 
         if (cartList) setIsDefer(false);
 
-        // console.log('cartList:', cartList)
-
     }, [globalDispatch, cartList]);
 
     // 刪除商品
@@ -161,17 +155,15 @@ const Cart = () => {
         delete obj[productId];
 
         e.preventDefault();
-
-        // return;
         Service.cartRemove({ cartId: id })
             .then((resData) => {
 
                 setCartList(resData);
                 setCartItem(obj); // 更新 localStorage
-                // globalDispatch({
-                //     type: 'remove_cart',
-                //     payload: productId,
-                // });
+                globalDispatch({
+                    type: 'remove_cart',
+                    payload: resData.list,
+                });
 
             });
 

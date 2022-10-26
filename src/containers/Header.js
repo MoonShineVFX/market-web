@@ -31,6 +31,7 @@ const Header = () => {
     const {
         deftags,
         user,
+        cartCount,
         targetBox,
         sideNav,
         globalDispatch,
@@ -38,8 +39,8 @@ const Header = () => {
 
     // Hook
     useGoogleAnalytics();
+    useCarts();
     const matches = useMediaQuery((theme) => theme.breakpoints.down('mobile'));
-    const { cartList } = useCarts();
 
     // 第三方
     useEffect(() => {
@@ -56,8 +57,6 @@ const Header = () => {
         if (!matches) globalDispatch({ type: 'sidenav', payload: false });
         document.body.style.overflow = sideNav ? 'hidden' : '';
 
-        // console.log('header carts:', carts)
-
     }, [globalDispatch, matches, sideNav]);
 
     // 購物車與我的帳號 box
@@ -72,8 +71,6 @@ const Header = () => {
 
     // 手機版 sidenav: 點擊
     const handleClickSideNav = () => globalDispatch({ type: 'sidenav', payload: !sideNav });
-
-    // console.log('header cartList:', cartList);
 
     return (
 
@@ -93,7 +90,7 @@ const Header = () => {
                         data-device={matches ? 'mobile' : 'desktop'}
                     >
                         <FontIcon icon={faShoppingCart} />
-                        <span className="count">({cartList?.list.length ?? 0})</span>
+                        <span className="count">({cartCount})</span>
                     </ShoppingCartLayout>
 
                     {

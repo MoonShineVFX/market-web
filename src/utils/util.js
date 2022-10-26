@@ -1,6 +1,5 @@
 import axios from 'axios';
 import dayjs from 'dayjs';
-import Cookies from 'js-cookie';
 import deftag from './util.deftag';
 
 const { currency_tw } = deftag;

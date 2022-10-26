@@ -15,7 +15,7 @@ const globalInitState = {
     targetPopup: null,
     sideNav: false,
     snackbar: false,
-    cart: null,
+    cartCount: 0,
     dynamicAction: '',
     isVerified: false,
 };
@@ -49,8 +49,8 @@ const GlobalProvider = ({ children }) => {
         targetPopup,
         sideNav,
         snackbar,
-        cart,
         dynamicAction,
+        cartCount,
         isVerified,
     } = globalState;
 
@@ -69,8 +69,8 @@ const GlobalProvider = ({ children }) => {
             targetPopup,
             sideNav,
             snackbar,
-            cart,
             dynamicAction,
+            cartCount,
             isVerified,
 
             // Form 表單暫存

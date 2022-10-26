@@ -27,6 +27,7 @@ const Service = {
     signin: ({ reqData, headers }) => util.serviceProxy('/login', reqData, {
         headers: { ...headers },
     }),
+    signout: (reqData) => util.serviceProxy('/logout', reqData),
     register: (reqData) => util.serviceProxy('/register', reqData),
     forgotPassword: (reqData) => util.serviceProxy('/forget_password', reqData),
     resetPassword: (reqData) => util.serviceProxy('/reset_password', reqData),

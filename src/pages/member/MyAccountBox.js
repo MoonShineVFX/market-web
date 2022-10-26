@@ -1,10 +1,10 @@
 import { useContext } from 'react';
-import { useNavigate, useParams, redirect } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { styled } from '@mui/system';
-import Cookies from 'js-cookie';
 import Box from '../../components/Box';
 import Links from '../../components/Links';
 import { GlobalContext } from '../../context/global.state';
+import Service from '../../utils/util.service';
 
 //
 const MyAccountLayout = styled(Box)(({ theme }) => ({
@@ -46,10 +46,14 @@ const MyAccountBox = () => {
     const handleClickLogout = (e) => {
 
         e.preventDefault();
-        Cookies.remove('token');
-        globalDispatch({ type: 'target_box', payload: '' });
-        localStorage.removeItem('cartItem'); // 清除暫存購物車
-        navigate(0); // 會導去登入頁
+        Service.signout()
+            .then(() => {
+
+                globalDispatch({ type: 'target_box', payload: '' });
+                localStorage.removeItem('cartItem'); // 清除暫存購物車
+                navigate(0); // 會導去登入頁
+
+            });
 
     };
 

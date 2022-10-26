@@ -32,30 +32,22 @@ const globalReducer = (state, { type, payload }) => {
                 sideNav: payload,
             };
 
-        case 'add_cart':
-            return {
-                ...state,
-                cart: {
-                    ...state.cart,
-                    count: Object.entries(payload).length,
-                    items: payload,
-                },
-            };
-
         case 'cart_list':
             return {
                 ...state,
-                cart: payload,
+                cartCount: payload.length,
+            };
+
+        case 'add_cart':
+            return {
+                ...state,
+                cartCount: Object.entries(payload).length,
             };
 
         case 'remove_cart':
-            delete state.cart.items[payload];
             return {
                 ...state,
-                cart: {
-                    ...state.cart,
-                    count: Object.entries(state.cart.items).length,
-                },
+                cartCount: payload.length,
             };
 
         case 'target_box':

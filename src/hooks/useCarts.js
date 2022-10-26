@@ -28,41 +28,21 @@ export default function useCartss(resData = null) {
     const [cartItem, setCartItem] = useLocalStorage('cartItem');
 
     // Context
-    const { user } = useContext(GlobalContext);
+    const { user, globalDispatch } = useContext(GlobalContext);
 
     // State
-    const [carts, setCarts] = useState(resData);
     const [cartList, setCartList] = useState(resData);
 
     useEffect(() => {
-
-        // console.log('init')
-
-        const init = () => {
-
-            setCarts({
-                count: Object.entries(cartItem || {}).length,
-                items: cartItem ?? {},
-            });
-
-        };
-
-        init();
-
-    }, [cartItem]);
-
-    useEffect(() => {
-
-        // console.log('fetchData')
 
         const fetchData = async () => {
 
             const data = await Service.cartList(locale);
             setCartItem(arrangeCartList(data.list));
             setCartList(data);
-            setCarts({
-                count: data.list.length,
-                items: arrangeCartList(data.list),
+            globalDispatch({
+                type: 'cart_list',
+                payload: data.list,
             });
 
         };
@@ -70,7 +50,7 @@ export default function useCartss(resData = null) {
         // 有登入並更新當前登入者的購物車
         if (user) fetchData();
 
-    }, [locale, user]);
+    }, [globalDispatch, locale, user]);
 
     return { cartList, setCartList };
 
