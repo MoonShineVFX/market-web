@@ -74,6 +74,15 @@ const globalReducer = (state, { type, payload }) => {
                 isVerified: payload,
             };
 
+        case 'update_account':
+            return {
+                ...state,
+                user: {
+                    ...state.user,
+                    ...payload,
+                },
+            };
+
         default:
             return { ...state };
     }

@@ -24,8 +24,8 @@ import ForgotPassword from './pages/guest/ForgotPassword';
 import ResetPassword from './pages/guest/ResetPassword';
 import ActiveAccount from './pages/guest/ActiveAccount';
 
-import AccountBase from './pages/member/AccountBase';
 import AccountCenter from './pages/member/AccountCenter';
+import ChangePassword from './pages/member/ChangePassword';
 
 import Cart from './pages/cart/Cart';
 
@@ -96,8 +96,9 @@ const PageRoute = () => {
 
                     <Route element={<ProtectedLayout logged={logged} />}>
                         <Route path="cart" element={<Cart />} />
-                        <Route path="member" element={<AccountBase />}>
-                            <Route path="account" element={<>account</>} />
+                        <Route path="member">
+                            <Route path="account" element={<AccountCenter />} />
+                            <Route path="change_password" element={<ChangePassword />} />
                         </Route>
                     </Route>
 

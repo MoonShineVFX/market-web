@@ -1,4 +1,5 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useForm } from 'react-hook-form';
 import { BtnDirectLayout } from '../guest/memberSignLayout';
 import { BoxWrapLayout } from './accountLayout';
@@ -7,28 +8,57 @@ import { FormRow } from '../../components/FormWrap';
 import Service from '../../utils/util.service';
 import { GlobalContext } from '../../context/global.state';
 
-const MyAccount = ({ data }) => {
+const MyAccount = () => {
+
+    // Route
+    const { locale } = useParams();
 
     // Context
-    const { deftags } = useContext(GlobalContext);
+    const { deftags, globalDispatch } = useContext(GlobalContext);
 
     // React Hook Form
     const { handleSubmit, register } = useForm();
+
+    // State
+    const [isDefer, setIsDefer] = useState(true);
+    const [pageData, setPageData] = useState(null);
+
+    useEffect(() => {
+
+        const fetchData = async () => {
+
+            const data = await Service.myAccount();
+            setPageData(data);
+            if (data) setIsDefer(false);
+
+        };
+
+        fetchData();
+
+    }, []);
 
     // 送資料
     const handleReqData = (reqData) => {
 
         Service.updateMyAccount(reqData)
-            .then(() => alert('更新成功'));
+            .then(() => {
+
+                alert('更新成功');
+                globalDispatch({
+                    type: 'update_account',
+                    payload: reqData,
+                });
+
+            });
 
     };
 
-    return (
+    return !isDefer && (
 
         <BoxWrapLayout>
             <div className="row">
                 <h4 className="title">{deftags.text_account}</h4>
-                {data.email}
+                {pageData.email}
             </div>
 
             <form onSubmit={handleSubmit(handleReqData)}>
@@ -38,7 +68,7 @@ const MyAccount = ({ data }) => {
                         type="text"
                         name="realName"
                         placeholder={deftags.cart_member_real_name}
-                        defaultValue={data.realName}
+                        defaultValue={pageData.realName}
                         {...register('realName')}
                     />
                 </FormRow>
@@ -49,7 +79,7 @@ const MyAccount = ({ data }) => {
                         type="text"
                         name="address"
                         placeholder={deftags.cart_member_address}
-                        defaultValue={data.address}
+                        defaultValue={pageData.address}
                         {...register('address')}
                     />
                 </FormRow>
@@ -62,7 +92,7 @@ const MyAccount = ({ data }) => {
 
                     <BtnDirectLayout
                         type="third"
-                        url="/member/change_password"
+                        url={`/${locale}/member/change_password`}
                         text={deftags.member_change_password}
                     />
                 </div>

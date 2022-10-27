@@ -4,6 +4,7 @@ import {
     useEffect,
     useState,
 } from 'react';
+import { useParams } from 'react-router-dom';
 import { Grid, useMediaQuery } from '@mui/material';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
@@ -68,13 +69,16 @@ const Item = ({
     },
 }) => {
 
+    // Route
+    const { locale } = useParams();
+
     // Hook
     const matches = useMediaQuery((theme) => theme.breakpoints.down('sm'));
 
     return (
 
         <ItemLayout
-            url={`/product/${productId}`}
+            url={`/${locale}/product/${productId}`}
             newPage
         >
             <TableGrid

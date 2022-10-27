@@ -4,19 +4,14 @@ import {
     useEffect,
     useState,
 } from 'react';
-import { useParams } from 'react-router-dom';
 import { Tabs, Tab, useMediaQuery } from '@mui/material';
-
 import { TitleLayout } from '../cart/cartLayout';
 import { TabWrapLayout } from './accountLayout';
 import SEO from '../../containers/SEO';
-
 import MyProduct from './MyProduct';
 import OrderRecord from './OrderRecord';
 import MyAccount from './MyAccount';
-
 import { GlobalContext } from '../../context/global.state';
-import Service from '../../utils/util.service';
 
 //
 const TabPanel = ({ value, indexKey, children, ...other }) => (
@@ -31,85 +26,42 @@ const TabPanel = ({ value, indexKey, children, ...other }) => (
 
 );
 
-// Empty
-const EmptyMesg = () => {
-
-    // Context
-    const { deftags } = useContext(GlobalContext);
-    return <p>{deftags.member_no_data}</p>;
-
-};
-
 //
 const AccountCenter = () => {
 
-    // Route
-    const { locale } = useParams();
-
     // Context
-    const { deftags, globalDispatch } = useContext(GlobalContext);
+    const { deftags } = useContext(GlobalContext);
 
     // Hook
     const matches = useMediaQuery((theme) => theme.breakpoints.down('mobile'));
 
     // State
     const [type, setType] = useState('product');
-    const [orderRecordList, setOrderRecordList] = useState([]);
-    const [profile, setProfile] = useState({});
-    const [isDefer, setIsDefer] = useState(true);
     const [types, setTypes] = useState(null);
 
     useEffect(() => {
 
-        globalDispatch({ type: 'sidenav', payload: false });
-        globalDispatch({ type: 'target_box', payload: '' });
+        setTypes({
+            product: {
+                title: deftags.member_my_product,
+                component: <MyProduct />,
+            },
+            order: {
+                title: deftags.order_text_order_record,
+                component: <OrderRecord />,
+            },
+            account: {
+                title: deftags.member_account_update,
+                component: <MyAccount />,
+            },
+        });
 
-        const fetchData = async () => {
-
-            const data = await Service.myProduct(locale);
-            setTypes({
-                product: {
-                    title: deftags.member_my_product,
-                    component: data.list.length ? <MyProduct data={data.list} /> : <EmptyMesg />,
-                },
-                order: {
-                    title: deftags.order_text_order_record,
-                    component: orderRecordList.length ? <OrderRecord data={orderRecordList} /> : <EmptyMesg />,
-                },
-                account: {
-                    title: deftags.member_account_update,
-                    component: <MyAccount data={profile} />,
-                },
-            });
-
-            if (data) setIsDefer(false);
-
-        };
-
-        fetchData();
-
-    }, [globalDispatch, locale, deftags.member_account_update, deftags.member_my_product, deftags.order_text_order_record, orderRecordList, profile]);
+    }, [deftags]);
 
     // Change TabMenu
-    const handleChangeTabMenu = (e, newValue) => {
+    const handleChangeTabMenu = (e, newValue) => setType(newValue);
 
-        const key = (newValue === 'order') ? 'orderRecord' : 'myAccount';
-        setType(newValue);
-
-        if (newValue !== 'product' && (!orderRecordList.length || !Object.entries(profile).length)) {
-
-            Service[key]().then((data) => {
-
-                if (newValue === 'order') setOrderRecordList(data.list);
-                else setProfile(data);
-
-            });
-
-        }
-
-    };
-
-    return !isDefer && (
+    return types && (
 
         <Fragment>
             <SEO title={`${deftags.member_account_center}-${types[type].title}`} />

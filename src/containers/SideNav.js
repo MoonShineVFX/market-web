@@ -1,20 +1,18 @@
 import { useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { faTimes, faShoppingCart } from '@fortawesome/free-solid-svg-icons';
-import Cookies from 'js-cookie';
-
 import { SideNavLayout } from './globalLayout';
 import Links from '../components/Links';
 import FontIcon from '../components/FontIcon';
 import Community from '../components/Community';
 import Navbar from './Navbar';
 import SideNavIcon from './SideNavIcon';
-
 import { GlobalContext } from '../context/global.state';
-import util from '../utils/util';
-
-const { redirectTo } = util;
 
 const Sidenav = () => {
+
+    // Route
+    const navigate = useNavigate();
 
     // Context
     const {
@@ -32,10 +30,9 @@ const Sidenav = () => {
     const handleClickLogout = (e) => {
 
         e.preventDefault();
-        Cookies.remove('token');
         globalDispatch({ type: 'target_box', payload: '' });
         localStorage.removeItem('cartItem'); // 清除暫存購物車
-        redirectTo();
+        navigate(0); // 會導去登入頁
 
     };
 

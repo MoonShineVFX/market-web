@@ -1,9 +1,11 @@
-import { useContext } from 'react';
+import { useContext, useEffect, useState } from 'react';
 import { useMediaQuery, Grid } from '@mui/material';
 import { OrderRecordLayout, OrderRecordGridLayout } from '../order/orderLayout';
 import Links from '../../components/Links';
+import EmptyMesg from '../../components/EmptyMesg';
 import { GlobalContext } from '../../context/global.state';
 import util from '../../utils/util';
+import Service from '../../utils/util.service';
 
 const { priceWithCommas, dateFormat, renderWithoutValue } = util;
 
@@ -186,7 +188,7 @@ const withCard = (data, deftag) => (
 );
 
 //
-const OrderRecord = ({ data }) => {
+const OrderRecord = () => {
 
     // Context
     const { deftags } = useContext(GlobalContext);
@@ -194,9 +196,31 @@ const OrderRecord = ({ data }) => {
     // Hook
     const matches = useMediaQuery((theme) => theme.breakpoints.up('mobile'));
 
-    return (
+    // State
+    const [isDefer, setIsDefer] = useState(true);
+    const [pageData, setPageData] = useState(null);
 
-        matches ? withTable(data, deftags) : withCard(data, deftags)
+    useEffect(() => {
+
+        const fetchData = async () => {
+
+            const data = await Service.orderRecord();
+            setPageData(data.list);
+            if (data) setIsDefer(false);
+
+        };
+
+        fetchData();
+
+    }, []);
+
+    return !isDefer && (
+
+        pageData.length ? (
+
+            matches ? withTable(pageData, deftags) : withCard(pageData, deftags)
+
+        ) : <EmptyMesg />
 
     );
 

@@ -1,7 +1,9 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useEffect } from 'react';
+import { useParams } from 'react-router-dom';
 import { useMediaQuery, Grid } from '@mui/material';
 import { ItemLayout } from './accountLayout';
 import Links, { ButtonLink } from '../../components/Links';
+import EmptyMesg from '../../components/EmptyMesg';
 import { GlobalContext } from '../../context/global.state';
 import util from '../../utils/util';
 import Service from '../../utils/util.service';
@@ -137,30 +139,59 @@ const Item = ({
 };
 
 //
-const MyProduct = ({ data }) => (
+const MyProduct = () => {
 
-    <Grid
-        container
-        className="container"
-        spacing="30px"
-    >
-        {
-            data.map((obj) => (
+    // Route
+    const { locale } = useParams();
 
-                <Grid
-                    key={obj.id}
-                    item
-                    xs={12}
-                    middle={6}
-                    mobile={4}
-                >
-                    <Item data={obj} />
-                </Grid>
+    // State
+    const [isDefer, setIsDefer] = useState(true);
+    const [pageData, setPageData] = useState(null);
 
-            ))
-        }
-    </Grid>
+    useEffect(() => {
 
-);
+        const fetchData = async () => {
+
+            const data = await Service.myProduct(locale);
+            setPageData(data.list);
+            if (data) setIsDefer(false);
+
+        };
+
+        fetchData();
+
+    }, [locale]);
+
+    return !isDefer && (
+
+        pageData.length ? (
+
+            <Grid
+                container
+                className="container"
+                spacing="30px"
+            >
+                {
+                    pageData.map((obj) => (
+
+                        <Grid
+                            key={obj.id}
+                            item
+                            xs={12}
+                            middle={6}
+                            mobile={4}
+                        >
+                            <Item data={obj} />
+                        </Grid>
+
+                    ))
+                }
+            </Grid>
+
+        ) : <EmptyMesg />
+
+    );
+
+};
 
 export default MyProduct;
