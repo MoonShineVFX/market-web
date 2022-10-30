@@ -292,28 +292,26 @@ const InvoiceForm = ({ items }) => {
                 </form>
             </InvoiceFormWrapLayout>
 
-            {
-                !!Object.keys(fields).length &&
-                    <form
-                        name="Newebpay"
-                        method="POST"
-                        action={`https://${(process.env.REACT_APP_HOST === 'market.moonshine.tw') ? 'core' : 'ccore'}.newebpay.com/MPG/mpg_gateway`}
-                        ref={formRef}
-                    >
-                        {
-                            Object.keys(fields).map((key) => (
+            <form
+                style={{ visibility: 'hidden' }}
+                name="Newebpay"
+                method="POST"
+                action={`https://${(process.env.REACT_APP_HOST === 'market.moonshine.tw') ? 'core' : 'ccore'}.newebpay.com/MPG/mpg_gateway`}
+                ref={formRef}
+            >
+                {
+                    Object.keys(fields)?.map((key) => (
 
-                                <input
-                                    key={key}
-                                    type="hidden"
-                                    name={key}
-                                    value={fields[key]}
-                                />
+                        <input
+                            key={key}
+                            type="hidden"
+                            name={key}
+                            value={fields[key]}
+                        />
 
-                            ))
-                        }
-                    </form>
-            }
+                    ))
+                }
+            </form>
         </Fragment>
 
     );
